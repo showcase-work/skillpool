@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+
+        <div class = "right-block user-settings-container">
+            <form action = "/user-settings/department-skills" method = "post" >
+                <div class = "right-block-padded-container">
+
+                    <h5>Select Your Departments</h5>
+
+                            <% departments.forEach(function(department){ %>
+                                <div class="row dept-edit">
+                                    <div class="col-xs-3 text-edit">
+                                        <label class="checkbox">
+                                            <input type="checkbox" class="department-checkboxes" value= "<%= department.id %>" name = "departments" data-toggle="checkbox"
+                                            <%
+
+                                            var index = -1;
+                                            if(user.departments && user.departments != null){
+                                                var user_departments = user.departments.split(',');
+                                                index = user_departments.indexOf(department.id.toString());
+                                            }
+                                            
+                                            if(index > -1){ %>
+                                                checked = "checked"
+                                            <%}%>
+                                            ><%= department.name %>
+                                        </label>
+                                    </div>
+                                </div>
+                            <% }) %>
+
+                </div>
+
+                <div class = "right-block-padded-container skills-padded-container" style="border-top:1px solid #e1e8ed; ">
+                    <h5 class="skills-heading">Select Your Skills</h5>
+                        <span style="color:red" class="error-div"></span>
+
+
+                    <div class = "edit-skills">
+                            
+                            <% departments.forEach(function(department){ %>
+                                <div class="row dept-edit skills-list dept-edit-<%=department.id%>">
+                                    <div class="text-edit">
+                                        <h3 class="demo-panel-title"><%= department.name %></h3>
+                                            
+                                            <% department.skills.forEach(function(skill){ %>
+                                        
+                                                <label class="checkbox">
+                                                <input type="checkbox" value= "<%= skill.id %>" name = "skills" data-toggle="checkbox"
+
+                                                <%
+                                                var index2 = -1
+                                                if(user.skills && user.skills != null){
+                                                    var user_skills = (user.skills).split(',');
+                                                    index2 = user.skills.split(',').indexOf(skill.id.toString());
+                                                }
+                                                if(index2 > -1){ 
+                                                %>
+
+                                                checked = "checked"
+
+                                                <% } %>
+                                                >
+                                                <%= (skill.name) %>
+                                                </label>
+
+                                            <% }) %>
+                                    </div>
+                                </div>
+                            <% }) %>
+
+                    </div>
+
+                    <br />
+
+                    <button type = "submit" name = "save" value = "Save" class="btn btn-primary ">Save</button>
+
+                    <a href = "/user-settings/work" class = "btn btn-primary btn-login submit-personal">Next</a>
+                </div>
+
+            </form>
+            
+        </div>
+    </div>
+</body>
+<% include ../shared/scripts %>
+<script>
+$(".department-checkboxes").click(function(){
+    var id = $(this).val();
+    if(this.checked){
+        $(".skills-padded-container").show(500);
+        $(".dept-edit-"+id).css("display","inline-block");
+    }
+    else{
+        $(".dept-edit-"+id).hide();
+        $(".dept-edit-"+id+" input").attr("checked", false);
+    }
+
+    if($(".skills-list").is(":visible")){
+        $(".skills-padded-container").show();
+    }
+    else
+    {
+        $(".skills-padded-container").hide();
+    }
+})
+
+$(".department-checkboxes").each(function(){
+    var id = $(this).val();
+    if(this.checked){
+        $(".skills-padded-container").show();
+        $(".dept-edit-"+id).css("display","inline-block");
+    }
+})
+
+$("form").submit(function(){
+    var x = false;
+    $(".skills-list input").each(function(){
+        if(this.checked){
+            x=true;
+        }
+    })
+
+    if(x==false){
+        $(".error-div").append("Please select atleast one skill");
+    }
+    return x;
+})
+</script>
+</html>

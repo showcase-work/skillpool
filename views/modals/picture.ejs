@@ -1,0 +1,34 @@
+<div class = "container">
+    <h5> Add Pictures to your Project </h5>
+
+    <form id="uploadForm"
+              enctype="multipart/form-data"
+              action="/api/upload/work-photos/"
+              method="post">
+
+        <input type="file" 
+        class="form-control-personal image-edit"
+        name = "photo"
+        size="50" multiple = "true"/>
+        <input type="hidden" name ="projectId" value="<%=projectId %>"/>
+        <br />
+        <button type="submit" value="submit" class="btn btn-primary btn-lg submit-personal modal-submit-button-pic"> Upload </button>
+        <span id = "status"></span>
+    </form>
+</div>
+
+<script>
+    $('#uploadForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+            error: function(xhr) {
+                status('Error: ' + xhr.status);
+            },
+            success: function(id) {
+                console.log(id);
+                window.location.replace("/works/edit-work?id="+id);
+            }
+        });
+        return false;
+    }); 
+</script>

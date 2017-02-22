@@ -1,0 +1,99 @@
+<script type="text/javascript">
+
+  $('#navFiltersForm').submit(function(e){
+    alert("working here too");
+    var self = $(this);
+    $.ajax({
+      url: "/discover/fetch-pages-for-discover",
+      method: "GET",
+      data: self.serialize(),
+      success:function(data){
+        console.log(data);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    })
+    e.preventDefault();
+  });
+
+  function fetchFilteredData(){
+    console.log("fetching filtered data");
+    var url = 
+    $('#navFiltersForm').submit();
+  }
+</script>
+<script type="text/javascript" src = "js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="js/masonry.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+
+<script type="text/javascript" src="js/nav-filters.js"></script>
+<script>
+    $('#multiple_filter_departments').applydepartmentfilter();
+    $('#multiple_filter_genres').applygenresfilter();
+    $('#multiple_filter_skills').applyskillsfilter();
+    $('#multiple_filter_type').applytypefilter();
+</script>
+<script>
+(function($) {
+    $.fn.applymasonry = function(){
+      self = $(this);
+
+      $(this).masonry({
+        // options
+        itemSelector: '.grid-item',
+        percentPosition: true,
+        columnWidth: '.grid-sizer',
+        gutter: '.gutter-sizer',
+      }); 
+    }
+
+    $.fn.reapplymasonry = function(){
+      self = $(this);
+
+      $(this).masonry('reloadItems').masonry({
+        itemSelector: '.grid-item', 
+        percentPosition: true, 
+        columnWidth: '.grid-sizer', 
+        gutter: '.gutter-sizer'});
+    }
+  }(jQuery));
+</script>
+<script>
+$(document).ready(function(){
+    function fetchdata(){
+      console.log("working here man really well")
+      element = $('.filter');
+      track_click = 0;
+          $.ajax({
+            url: '/discover/fetch-pages-for-discover',
+            type: 'GET',
+            cache: false,
+            beforeSend: function(){
+              // change submit button value text and disabled it
+              $('.fetched_data_container').html('Loading...');
+            },
+            success: function(data){
+              console.log("done herere");
+              // Append with fadeIn see http://stackoverflow.com/a/978731
+
+                    $('.fetched_data_container').html(data);
+                    $(".grid").imagesLoaded( function() {
+                        $(".grid").applymasonry();
+                        $(".grid").reapplymasonry();
+                    });
+
+                    $('body').on('hidden.bs.modal', '.modal', function () {
+                       $(this).removeData('bs.modal');
+                     });
+              }
+            });
+        }
+
+        fetchdata();
+
+
+
+})
+</script>

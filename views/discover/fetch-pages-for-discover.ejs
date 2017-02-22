@@ -1,0 +1,234 @@
+<% for(var i=0; i < media.length; i++){ %>
+    <%
+    var mediaObject = media[i];
+    var media_id = mediaObject['id'];
+      var media_description = mediaObject['description'];
+      var media_type = mediaObject['media_type'];
+      var media_link = mediaObject['link'];
+      var blog = mediaObject['blog'];
+      if(mediaObject['tags'] && mediaObject['tags'].length>0){
+        var media_genres = mediaObject['tags'].split(',');
+      }
+      else
+      {
+        var media_genres = [];
+      }
+      
+      var comments = mediaObject['comments'];
+      var likes = mediaObject['likes'];
+
+    var artist_id = mediaObject['User.id'];
+      var artist_name = mediaObject['User.name'];
+      var artist_username = mediaObject['User.username'];
+      var artist_image = mediaObject['User.image'];
+
+    var likes_count = mediaObject['likes'].length;
+    var comment_count = mediaObject['comments'].length;
+    var shared_count=20;
+    /*var shared_count = mediaObject['shares'].length;*/
+    var like_str = "like";
+    var comment_str = "comment";
+    var save_str = "save";
+    var share_str = "share";
+
+    if(user){
+      var user_id = user.id;
+
+        mediaObject['comments'].forEach(function(comment){
+          if(comment['User.id']==user_id){
+            comment_str = "commented";
+          }
+        })
+
+        mediaObject['likes'].forEach(function(like){
+          if(like['User.id']==user_id){
+            like_str = "liked";
+          }
+        })
+    }
+    
+    var lists=[];
+    
+    %>
+
+    <div class = "grid-item">
+        <div class = "dashboard-works-preview">
+            <a data-toggle="modal" href = "media_viewer.php?media_id=<%- media_id; %>" data-target="#mediaviewer_modal">
+                <% 
+                if (media_type == "youtube")
+                {
+                    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+                    var match = media[i].link.match(regExp);
+                    var youtube_id = (match&&match[7].length==11)? match[7] : false;
+                %>
+                    <div class = "youtube">
+                        <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%- youtube_id; %>" frameborder="0" allowfullscreen></iframe> 
+                        <div class ="youtube-opn">
+                           <span class ="fui-resize youtube-open">
+                           </span>
+                        </div>
+                    </div>
+
+                <%
+                } 
+                %>
+
+
+                <%
+                if (media_type == "blog")
+                {
+                %>
+          
+                    <div class="blog-outer-container restricted">
+                        <div class="blog-inner-container">
+                            <%- blog; %>
+                        </div>
+                    </div>
+
+                <%
+                }
+                %>
+
+
+                <%
+                if (media_type == "image")
+                { %>
+                  <div class = "image-viewer" >
+                    <img class="image-viewer-img" style = "width: 100%;" src ="<%- media_link %>"/> 
+                    <!-- <img class="image-viewer-img" src="http://www.w3schools.com/css/trolltunga.jpg"/> -->
+                  </div>
+                <%
+                } %>
+
+
+                <%
+                if (media_type == "soundcloud")
+                {
+                %>
+                <iframe style = "margin-bottom:-8px" width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%- media_link; %>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+                <%
+                } 
+                %>
+            </a>
+
+            <div class = "media-viewer-genres" >
+
+                    <div class ="genretagsshadow">
+                        <%
+                        media_genres.forEach(function(genre){ %>
+                          <div class = "insidemvg">#<%=genre%></div>
+                        <% }) %>
+                    </div>
+
+                    <div class ="lcsb-dashboard">
+                        <table>
+                            <tr>
+
+                                <td>
+                                  <button title="<%- like_str; %>" value = "<%- media_id; %>" class = "like<%- media_id; %> likemedia" id = "media"><i class ="fa fa-thumbs-o-up  <%- like_str %>"></i>
+                                  </button>
+                                </td>
+                                <td>
+                                  <a href ="#"><%- likes_count; %></a>
+                                </td>
+
+
+                                <td>
+                                  <button title="comment" class="comment<%- media_id; %> ">
+                                    <a data-toggle="modal" href = "media_viewer.php?media_id=<%- media_id; %>" data-target="#mediaviewer_modal"><i class ="fa fa-comment-o <%- comment_str; %>"></i>
+                                    </a>
+                                  </button>
+                                </td>
+                                <td>
+                                  <a data-toggle="modal" href = "media_viewer.php?media_id=<%- media_id;%>" data-target="#mediaviewer_modal">
+                                    <%- comment_count; %>
+                                  </a>
+                                </td>
+
+
+                                <td>
+                                  <div class="dropdown"><button  title="share" class="dropdown-toggle" data-toggle="dropdown"><i class ="fa fa-share-alt <%- share_str; %>" id = "share_icon<%- media_id; %>"></i></button>
+                                      <ul class="dropdown-menu">
+                                        <li><a href="#">Facebook</a></li>  
+                                        <li><a href="#">Twitter</a></li> 
+                                        <li><a data-toggle="modal" href = "../sharing_content/share_media_skillpool.php?media_id=<%- media_id; %>" class = "share_with_skillpool" data-target="#skillpool_share_modal">Skillpool</a></li> 
+                                      </ul>
+                                  </div>
+                                </td>   
+                                <td>
+                                  <a href ="#" class = "sharecount<%- media_id; %>"><%- shared_count; %></a>
+                                </td>
+
+
+                                <td>
+                                    <div class="dropdown">
+                                        <button title="<%- save_str; %>" class="dropdown-toggle  <%- save_str; %>" data-toggle="dropdown">
+                                          <i class ="fa fa-star-o <%- save_str; %> "></i>
+                                        </button>
+
+                                            <% if(lists.length>0){ %>
+                                                <ul class="list-ul-div<%- media_id;%> dropdown-menu lists_list" value = "<%- media_id; %>" id = "<%- media_type; %> ">
+                                                    <%
+                                                    while(list = mysql_fetch_array($lists))
+                                                    {
+                                                      $list_name = $list['list_name'];
+                                                      $list_id = $list['id'];
+                                                      $saved_str = get_is_listed($list_id, $media_id, $user_id);
+                                                      %>
+                                                      <li>
+                                                        <div class = "save<%- list_id;%> save-to-list <%- saved_str; %>" value = "<%- list_id; %>" >
+                                                          <%- list_name; %>
+                                                        </div>
+                                                      </li>
+
+                                                      <%
+                                                    } %>
+
+                                                    <div class = "new_lists<%- media_id; %> new_lists">
+                                                    </div>
+                                                    <li>
+                                                      <a data-toggle="modal" href = "../comment_like_share_list/list/add_new_list_inline.php?media_id=<%- media_id;%>&type=<%- media_type;%>&list_for=media" class = "add_new_list_inline" data-target="#skillpool_share_modal">
+                                                        <div class = "add-new-list">New List</div>
+                                                      </a>
+                                                    </li>
+                                                </ul>
+                                            <%
+                                            } 
+                                            %>
+
+                        
+                                        
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                        </table>
+                    </div>
+            </div>
+
+            <div class = "artistandimage">
+              <a href ="user_profile.php/<%- artist_username; %>">
+                <img class="artistandimage-img" src = "/images/saurabh.jpg" />
+              </a>
+              <table class="media-desc-info-table">
+                <tr>
+                  <td>
+                    <a href ="user_profile.php/<%- artist_username; %>\">
+                      <%- artist_name; %>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class = "media-description">
+                    <%- media_description; %>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+        </div>
+    </div>
+
+
+<% } %>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+
+    <link rel="stylesheet" type="text/css" href="css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="css/discover.css">
+
+    <% include ../shared/scripts-top %>
+
+    <title><%= title %></title>
+
+</head>
+<body>
+
+    <% include ../navbar/navbar-main %>
+    <div class="row filters-nav-bar">
+
+        <div class = "menu-dashboard">
+                <form id="navFiltersForm" class = "filter" method = "get" action = "">
+
+                    <select id="multiple_filter_departments" multiple="multiple">
+                      <option value="music">Music</option>
+                      <option value="videography">Videography</option>
+                      <option value="photography">Photography</option>
+                      <option value="art/design">Art/Design</option>
+                      <option value="writing">Writing</option>
+                    </select>
+                
+                 
+                    <select id = "multiple_filter_genres" multiple = "multiple">
+                        <option value=\"{$genre_name['genre_name']}\">Funk</option>
+                        <option value=\"{$genre_name['genre_name']}\">Funk2</option>
+                        <option value=\"{$genre_name['genre_name']}\">Funk3</option>
+                        <option value=\"{$genre_name['genre_name']}\">Funk4</option>
+                        <option value=\"{$genre_name['genre_name']}\">Funk5</option>
+                    </select>
+
+
+                    <select id = "multiple_filter_skills" multiple = "multiple">
+                        
+                        <option value=\"{$skill_name['sub_skill']}\">gag</option>
+                        <option value=\"{$skill_name['sub_skill']}\">gag2</option>
+                        <option value=\"{$skill_name['sub_skill']}\">gag3</option>
+                        <option value=\"{$skill_name['sub_skill']}\">gag4</option>
+                    
+                    </select>
+                
+                
+                    <select id = "multiple_filter_type" multiple = "multiple">
+                        <option value="soundcloud">Audio</option>
+                        <option value="youtube">Video</option>
+                        <option value="picture">Picture</option>
+                        <option value="writing">Writing</option>
+                        <option value="status">Status</option>
+                    </select>
+
+                    <button type="submit" name="issubmit" value="asd">submit</button>
+                </form>
+
+               <% if(user && user != null && user.name != null){ %>
+               <div class = "user-name">
+                  <small>Welcome</small>&nbsp <%= user.name %>
+               </div>
+              <%}%>
+        </div>
+
+    </div>
+
+    <div class="container discover"> 
+
+            <div class = "side-nav inline-block-top">
+
+                  <% include ../shared/sidebar.ejs %>
+
+            </div><div class = "main-block inline-block-top">
+
+                  <div class = "recent-works" >
+                        <div class="grid ">
+                          <div class="grid-sizer"></div>
+                            <div class="gutter-sizer"></div>
+
+                          <div class="fetched_data_container"> Loading... </div>
+                        </div>
+                        <br />
+                        <button class="load_more btn btn-login btn-primary" id="load_more_button">load More</button>
+                        <div class="animation_image" style="display:none;">Loading...</div>
+                  </div>
+
+            </div><div class = "right-block inline-block-top">
+
+                 <?php include "right_block.php" ?>
+
+            </div>
+
+    </div>
+
+</body>
+
+<% include ../shared/scripts %>
+<% include scripts.ejs %>
+
+</html>

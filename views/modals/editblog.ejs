@@ -1,0 +1,201 @@
+<!-- include summernote css/js-->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+ <div class = "container">
+    <form id="updateForm"
+                  method="post">
+        <div id="summernote"><%- media[0].blog %></div>
+        <button type="submit" value="submit" class="btn btn-primary btn-lg submit-personal modal-submit-button-pic"> Update </button>
+        <span id = "status"></span>
+        <!-- <input type="hidden" name ="projectId" value=""/> -->
+    </form>
+</div> 
+
+<div id="musicBlogModal" class="modal fade" role="dialog" style="z-index:100000000">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <form id="formSubmitMusicForBlog" action="#" method="get">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Insert Soundcloud Link</h4>
+          </div>
+          <div class="modal-body">
+            <input type="text" name="" class="form-control music-blog-modal">
+            <div class="soundcloud-viewer-for-blog"></div>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-small" type="submit">Save</button>
+          </div>
+        </div>
+    </form>
+    
+  </div>
+</div>
+
+
+
+
+<script>
+    $('#updateForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        var blogCode = $('#summernote').summernote('code');
+        $.ajax(
+            {
+                url: "/api/update/work-blog/", 
+                type: "POST",
+                data: {blog:blogCode, projectId:<%=projectId %>, mediaId:<%=media[0].id%>},
+                success: function(id){
+                    window.location.replace("/works/edit-work?id="+id);
+                }
+            }
+        );
+        return false;
+    }); 
+
+    $(document).ready(function() {
+
+        var HelloButton = function (context) {
+          var ui = $.summernote.ui;
+          // create button
+          var button = ui.button({
+            contents: '<i class="fa fa-music"/>',
+            tooltip: 'Music',
+            click: function () {
+              // invoke insertText method with 'hello' on editor module.
+              //context.invoke('editor.insertText', 'music');
+              $('#summernote').summernote('editor.saveRange');
+              $('#musicBlogModal').modal('show');
+              $('.music-blog-modal').bind("change input paste", function(){
+                console.log("changed value");
+                var self = $(this);
+                var trackUrl = self.val();
+                console.log(trackUrl);
+                var Client_ID = '359cc0af9eb6ab2fe6d0cceed75fe418';
+
+                $.ajax({
+                    url: 'http://api.soundcloud.com/resolve.json?url=' + trackUrl + '&client_id=' + Client_ID,
+                    type: 'GET',
+                    success: function(data){ 
+                        var id = data.id;
+                        $(".soundcloudId").val(id);
+                        var textToInsert = '<iframe width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/'+id+'&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
+                        $('.soundcloud-viewer-for-blog').html(textToInsert);       
+                    },
+                    error: function(data) {
+                        console.log('woops!'); 
+                        $('.soundcloud-viewer-for-blog').html("");
+                    }
+                });
+              })
+            }
+          });
+          return button.render();   // return button as jquery object 
+        }
+
+        $('#summernote').summernote({
+            height:500,
+            focus:true,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['table', ['table']],
+                ['insert', ['picture','music','video','link','hr']],
+                ['view', ['fullscreen', 'codeview']],
+                ['help', ['help']]
+              ],
+            buttons: {
+                music: HelloButton
+              },
+            callbacks: {
+                onImageUpload: function(files) {
+                    console.log("not workigninginginignig");
+                    console.log(files);
+                    var formData = new FormData();
+
+                    for (var i = 0; i < files.length; i++) {
+                      var file = files[i];
+                      console.log(file);
+                      // Check the file type.
+                      if (!file.type.match('image.*')) {
+                        continue;
+                      }
+                      console.log("continuing");
+                      // Add the file to the request.
+                      formData.append('photo', file, file.name);
+                    }
+
+                    function progressHandlingFunction(e){
+                        if(e.lengthComputable){
+                            console.log(e);
+                            $('progress').attr({value:e.loaded,max:e.total});
+                        }
+                    }
+
+                    $.ajax(
+                        {
+                            url: "/api/upload/images/", 
+                            type: "POST",
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            cache: false,
+                            xhr: function() {  // Custom XMLHttpRequest
+                                        var myXhr = $.ajaxSettings.xhr();
+                                        console.log("working in xhr");
+                                        if(myXhr.upload){ // Check if upload property exists
+                                            myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+                                        }
+                                        return myXhr;
+                                    },
+                            success: function(result){
+                                console.log(result);
+                                result.forEach(function(picture){
+                                    $('#summernote').summernote('editor.insertImage', picture.url);
+                                })
+                            }
+                        }
+                    );                    
+                }
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    function placeCaretAtEnd(el) {
+        
+        if (typeof window.getSelection != "undefined"
+                && typeof document.createRange != "undefined") {
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        } else if (typeof document.body.createTextRange != "undefined") {
+            var textRange = document.body.createTextRange();
+            textRange.moveToElementText(el);
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
+</script>
+
+<script>
+   $("#formSubmitMusicForBlog").submit(function(){
+       var node = document.createElement('div');
+       node.innerHTML = $('.soundcloud-viewer-for-blog').html();
+        
+       $('#summernote').summernote('editor.restoreRange');
+       $('#summernote').summernote('editor.focus');       
+       $('#summernote').summernote('editor.insertNode', node);
+       $('#musicBlogModal').modal('hide');
+       return false;
+   })
+</script>
+

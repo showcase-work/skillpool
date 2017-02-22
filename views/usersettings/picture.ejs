@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+    <link rel="stylesheet" href="/css/jquery.Jcrop.css" type="text/css" />
+
+    <% include ../shared/scripts-top %>
+
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+
+        <div class = "right-block user-settings-container">
+            <div class = "right-block-padded-container">
+
+                <h5>Change your Profile Picture</h5>
+                <p style="display:none;" class="crop-picture-heading"> Crop your profile Picture </p>
+
+                <form action = "/api/profile-image" enctype="multipart/form-data" method = "post" >
+
+                    <div class="edit-profile-picture-image">
+                        <img class="preview-img-edit" src="<%= user.image %>">
+                    </div>
+
+                    <button class="final-crop btn btn-primary">Crop</button>
+
+                    <div class="form-group-personal profile-pic-input">
+                        <input type="file" class="form-control-personal image-edit" name = "userPhoto" id="userPhoto"/>
+                        <button value = "Save" class="btn btn-primary submit-btn">Upload</button>
+                    </div> 
+                </form>
+
+                <progress></progress>
+                
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+<% include ../shared/scripts %>
+<script src="/js/jquery.Jcrop.js"></script>
+<script>
+$(".submit-btn").click(function(e){
+    e.preventDefault();
+    var data = new FormData();
+    var file = $(".image-edit")[0]['files'];
+    console.log(file);
+    data.append('userPhoto', file[0]);
+    function progressHandlingFunction(e){
+        if(e.lengthComputable){
+            console.log(e);
+            $('progress').attr({value:e.loaded,max:e.total});
+        }
+    }
+    $.ajax({
+            url: '/api/profile-image',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            xhr: function() {  // Custom XMLHttpRequest
+                        var myXhr = $.ajaxSettings.xhr();
+                        if(myXhr.upload){ // Check if upload property exists
+                            myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+                        }
+                        return myXhr;
+                    },
+            success: function(data){
+                var imgContainer = $(".preview-img-edit");
+                var cropImageHeading = $(".crop-picture-heading");
+                var submitButton = $(".final-crop");
+                var coordinates;
+                var imgSrc = "/images/"+data.filename;
+                var uploadBox = $(".profile-pic-input");
+
+                var img = new Image();
+                img.src = imgSrc;
+                img.onload = function() {
+                    var widthSet = 200;
+                    var heightSet = Math.round((widthSet * this.height)/this.width);
+
+                    data.width = widthSet;
+                    data.height = heightSet;
+
+
+                    imgContainer.attr("src", imgSrc);
+                    imgContainer.css("border-radius", "0px");
+                    cropImageHeading.show();
+                    submitButton.show();
+                    uploadBox.hide();
+
+                    imgContainer.Jcrop({
+                      aspectRatio: '1',
+                      setSelect: [0,0,widthSet,heightSet],
+                      onSelect: updateCoords,
+                      onChange: updateCoords
+                    });
+
+                    JcropAPI = imgContainer.data('Jcrop');
+
+                    function updateCoords(c)
+                    {
+                      coordinates = c;
+                    };
+
+                    function checkCoords()
+                    {
+                      if (parseInt($('#w').val())) return true;
+                      alert('Please select a crop region then press submit.');
+                      return false;
+                    };
+
+                    submitButton.click(function(event){
+                        event.preventDefault();
+                        submitCrop();
+                    })
+
+                    function submitCrop(){
+                        data.newCoordinates = coordinates;
+                        
+                        $.ajax({
+                            url: '/api/profile-image/crop',
+                            data: data,
+                            cache: false,
+                            type: 'POST',
+                            beforeSend: function(){
+                              imgContainer.css("height", "initial");
+                            },
+                            success: function(data){
+                                location.reload();
+                            }
+                        })
+                    }
+                }             
+            }
+    });
+})
+</script>
+</html>

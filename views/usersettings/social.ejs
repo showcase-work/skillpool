@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+
+    <% include ../shared/scripts-top %>
+
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+
+        <div class = "right-block user-settings-container">
+            <div class = "right-block-padded-container">
+                <h5>Connect with your social accounts</h5>
+                <table class="social-media-list-connection">
+                    <tbody>
+                        <tr>
+                            <td><button class="social-connect">Facebook</button></td>
+                            <% if(user.facebook && user.facebook != null){ %>
+                            <td><button value="facebook" class="disconnect">Disconnect</button></td>
+                            <%}else{%>
+                            <td><button value="facebook" class="connect">Connect</button></td>
+                            <%}%>
+                        </tr>
+                        <tr>
+                            <td><button class="social-connect">Twitter</button></td>
+                            <% if(user.twitter && user.twitter != null){ %>
+                            <td><button value="twitter" class="disconnect">Disconnect</button></td>
+                            <%}else{%>
+                            <td><button value="twitter" class="connect">Connect</button></td>
+                            <%}%>
+                        </tr>
+                        <tr>
+                            <td><button class="social-connect">Google</button></td>
+                            <% if(user.google && user.google != null){ %>
+                            <td><button value="google" class="disconnect">Disconnect</button></td>
+                            <%}else{%>
+                            <td><button value="google" class="connect">Connect</button></td>
+                            <%}%>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+<% include ../shared/scripts %>
+<script>
+    $(".connect").click(function(e){
+        var provider = $(this).val();
+        console.log(provider);
+        var url3 = "/login/connect/"+provider;
+        var child_window = popupWindow(url3,"login",500,500,url3);
+         e.preventDefault();
+    })
+
+    $(".disconnect").click(function(e){
+        var provider = $(this).val();
+        var url4 = "/login/disconnect/"+provider;
+        $.ajax({
+          method: "GET",
+          url: url4,
+          success:function(data){
+            if(data){
+                location.reload();
+            }
+          }
+        })
+        e.preventDefault();
+    })
+</script>
+</html>

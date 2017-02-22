@@ -1,0 +1,75 @@
+<div class = "container">
+    <h5> Add Youtube Video to your Project </h5>
+
+    <form id="uploadForm"
+              action="/api/upload/work-youtube/"
+              method="post">
+
+        <input type="text" 
+        class="form-control-personal youtube-input margin-bottom-10"
+        name = "youtube"/>
+        <input type="hidden" class="form-control-personal youtubeID" name="youtubeId" value="false">
+        <input type="hidden" name ="projectId" value="<%=projectId %>"/>
+        <br />
+        <div class="youtube-preview">
+            
+        </div>
+        <button type="submit" value="submit" class="btn btn-primary btn-lg submit-personal modal-submit-button-pic"> Add </button>
+    </form>
+</div>
+
+<script>
+    function youtube_parser(url){
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        return (match&&match[7].length==11)? match[7] : false;
+    }
+
+    $('#uploadForm').submit(function() {
+        if($(".youtubeID").val() != "false"){
+            $(this).ajaxSubmit({
+                error: function(xhr) {
+                    status('Error: ' + xhr.status);
+                },
+                success: function(id) {
+                    console.log(id);
+                    window.location.replace("/works/edit-work?id="+id);
+                }
+            });
+        }
+        else
+        {
+            console.log("not valid");
+            $(".youtube-preview").html("<p>Please enter a valid Youtube Url</p>")
+        }
+        return false;
+    }); 
+
+    $(".youtube-input").each(function(){
+        var self = $(this);
+        var oldVal = self.val();
+        $(".youtube-input").bind("propertychange change keyup input paste", function(event){
+            var self = $(this);
+            var newVal = self.val();
+            if (newVal == oldVal){
+                console.log("same val");
+            }
+            else
+            {
+                var youtubeContainer = $(".youtube-preview");
+                var id = youtube_parser(self.val());
+                console.log(id);
+                if(id){
+                    $(".youtubeID").val(id);
+                    youtubeContainer.html('<iframe class = "display_works_media" width="100%" height="300" src="https://www.youtube.com/embed/'+id+'" frameborder="0" allowfullscreen></iframe>');
+                }
+                else
+                {
+                    youtubeContainer.html("");
+                }
+            }
+        });
+    })
+    
+
+</script>

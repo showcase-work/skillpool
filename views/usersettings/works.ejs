@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+        <div class = "right-block user-settings-container work-settings-block">
+                
+                <a href="/works/add-work">
+                    <div class = "settings-work-card sample-card-add">
+                        <div class = "settings-work-card-inside sample">
+                            <h5 class = "project-title">+Add New Project</h5>
+                            <div class = "main-media-container">
+                                <div class = "media-container">
+                                    <i class="fa fa-plus sample-add-work"></i>
+                                </div>
+                                <div class = "genres-contaner">
+                                </div>
+                            </div>
+                            <div class = "user-details-work-card">
+                                <div class="user-image-thumb-work-card sample-user-details-work-card">
+                                </div>
+                                <div class="user-name-and-role-work-card">
+                                    <a href=""><p class="user-name-card"></p></a>
+                                    <p class="role-card"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <% works.forEach(function(work){ %>
+                    <% var tags = work.tags.split(',');%>
+                    <a href="/works/edit-work?id=<%=work.id%>">
+                        <div class = "settings-work-card">
+                            <div class = "settings-work-card-inside">
+                                <h5 class = "project-title"><%=work.title%></h5>
+                                <div class = "main-media-container">
+                                    <div class = "media-container">
+                                        <% if(work.coverDetails){ %>
+                                            <% if(work.coverDetails.media_type == "image") {%>
+                                                <div class="mediaimage" style="background:url('<%=work.coverDetails.link%>')"></div>
+                                            <%} %>
+                                            <% if(work.coverDetails.media_type == "youtube") {%>
+                                                <div class="youtube-container">
+                                                    <iframe style="margin-bottom:-8px;" width="100%" height="230px" src="https://www.youtube.com/embed/<%-work.coverDetails.link%>" frameborder="0" allowfullscreen></iframe> 
+                                                </div>
+                                            <%} %>
+                                            <% if(work.coverDetails.media_type == "blog") {%>
+                                                <div class="blog-outer-container restricted">
+                                                    <div class="blog-inner-container">
+                                                        <%-work.coverDetails.blog%>
+                                                    </div>
+                                                </div>
+                                            <%} %>
+
+                                        <%}%>
+                                    </div>
+                                    <ul class="genres-container">
+                                        <% tags.forEach(function(tag){ %>
+                                                <li><%= tag %></li>
+                                        <%})%>
+                                    </ul>
+                                </div>
+                                <div class = "user-details-work-card">
+                                    <div class="user-image-thumb-work-card">
+                                        <img src="<%=user.image%>"/>
+                                    </div>
+                                    <div class="user-name-and-role-work-card">
+                                        <a href=""><p class="user-name-card"><%=user.name%></p></a>
+                                        <p class="role-card"><%=work.role%></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+        </div>
+    </div>
+</body>
+<% include ../shared/scripts %>
+</html>

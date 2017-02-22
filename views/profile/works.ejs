@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+
+        <div class = "right-block user-settings-container work-settings-block">
+
+                  <div class = "settings-work-card">
+                    <div class = "settings-work-card-inside">
+                        <h5 class = "project-title">Minimalistic Poster Designs</h5>
+                        <div class = "main-media-container">
+                            <div class = "media-container">
+                                <div class="mediaimage" style="background:url('/images/saurabh.jpg')"></div>
+                            </div>
+                            <div class = "genres-contaner">
+                            </div>
+                        </div>
+                        <div class = "user-details-work-card">
+                            <div class="user-image-thumb-work-card">
+                                <img src="/images/saurabh.jpg"/>
+                            </div>
+                            <div class="user-name-and-role-work-card">
+                                <a href=""><p class="user-name-card">Saurabh</p></a>
+                                <p class="role-card">Graphic Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                  </div><a href="/works/add-work"><div class = "settings-work-card sample-card-add">
+                    <div class = "settings-work-card-inside sample">
+                        <h5 class = "project-title">+Add New Project</h5>
+                        <div class = "main-media-container">
+                            <div class = "media-container">
+                                <i class="fa fa-plus sample-add-work"></i>
+                            </div>
+                            <div class = "genres-contaner">
+                            </div>
+                        </div>
+                        <div class = "user-details-work-card">
+                            <div class="user-image-thumb-work-card sample-user-details-work-card">
+                            </div>
+                            <div class="user-name-and-role-work-card">
+                                <a href=""><p class="user-name-card"></p></a>
+                                <p class="role-card"></p>
+                            </div>
+                        </div>
+                    </div>
+                  </div></a>
+        </div>
+    </div>
+</body>
+<% include ../shared/scripts %>
+</html> 

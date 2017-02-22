@@ -1,0 +1,81 @@
+<div class = "container">
+    <h5> Add Soundcloud Video to your Project </h5>
+
+    <form id="uploadForm"
+              action="/api/upload/work-soundcloud/"
+              method="post">
+
+        <input type="text" 
+        class="form-control-personal soundcloud-input margin-bottom-10"
+        name = "soundcloud"/>
+        <input type="hidden" class="form-control-personal soundcloudId" name="soundcloudId" value="false">
+        <input type="hidden" name ="projectId" value="<%=projectId %>"/>
+        <br />
+        <div class="soundcloud-preview">
+            
+        </div>
+        <button type="submit" value="submit" class="btn btn-primary btn-lg submit-personal modal-submit-button-pic">Add</button>
+    </form>
+</div>
+
+<script>
+    function soundcloud_parser(url){
+
+        var soundcloudContainer = $(".soundcloud-preview");
+        var trackUrl = url;
+        var Client_ID = '359cc0af9eb6ab2fe6d0cceed75fe418';//you have to register in soundcound developer first in order to get this id 
+
+        console.log("ajsndnaskjjndjasd");
+        $.ajax({
+            url: 'http://api.soundcloud.com/resolve.json?url=' + trackUrl + '&client_id=' + Client_ID,
+            type: 'GET',
+            success: function(data){ 
+                var id = data.id;
+                $(".soundcloudId").val(id);
+                soundcloudContainer.html('<iframe width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/'+id+'&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>');
+            },
+            error: function(data) {
+                console.log('woops!'); 
+                soundcloudContainer.html("");
+            }
+        });
+    }
+
+    $('#uploadForm').submit(function() {
+        if($(".soundcloudId").val() != "false"){
+            $(this).ajaxSubmit({
+                error: function(xhr) {
+                    status('Error: ' + xhr.status);
+                },
+                success: function(id) {
+                    console.log(id);
+                    window.location.replace("/works/edit-work?id="+id);
+                }
+            });
+        }
+        else
+        {
+            console.log("not valid");
+            $(".soundcloud-preview").html("<p>Please enter a valid Soundcloud Url</p>")
+        }
+        return false;
+    }); 
+
+    $(".soundcloud-input").each(function(){
+        var self = $(this);
+        var oldVal = self.val();
+        $(".soundcloud-input").bind("change input paste", function(event){
+            var self = $(this);
+            var newVal = self.val();
+            if (newVal == oldVal){
+                console.log("same val");
+            }
+            else
+            {
+                soundcloud_parser(self.val());
+            }
+        });
+    })
+    
+
+</script>

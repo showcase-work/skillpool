@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+
+        <div class = "right-block user-settings-container add-work-container">
+                    <div class="heading-block add-project-heading">
+                        <h5>Edit Project Details</h5>
+                        <div class="arrow-down arrow"></div>
+                    </div>
+                    <div class = "right-block-padded-container edit-work-container-hide">
+                        <form action="/works/edit-work" method = "post" class="add-work-form" >
+
+                            <ul class="form-content">
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Project Title *</label>
+                                                </td>
+                                                <td class="project-title">
+                                                    <input type="text" 
+                                                    value="<%= project.title %>" 
+                                                    class="form-control-personal"
+                                                    name = "title"
+                                                    placeholder = "Project Title" />
+                                                   
+                                                        <input type="hidden" 
+                                                        value="<%= project.id %>" 
+                                                        class="form-control-personal projectIdInput"
+                                                        name = "projectId"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table class="textareawithnumber">
+                                            <tr>
+                                                <td>
+                                                    <label>Description</label>
+                                                </td>
+                                                <td>
+                                                    <textarea 
+                                                    type="text"
+                                                    class="form-control-personal"
+                                                    name = "description"
+                                                    placeholder = "Describe your project"><%= project.description %></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Role</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="<%= project.role %>" 
+                                                    class="form-control-personal role"
+                                                    name = "role"
+                                                    placeholder = "Your role? Graphic Designer, etc" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Project Domain</label>
+                                                </td>
+                                                <td>
+                                                    <select 
+                                                        value="<%= project.type %>" 
+                                                        class="form-control-personal "
+                                                        name = "type"
+                                                        placeholder = "college start year?"
+                                                        id = "type">
+                                                        <option value = "music" >Music</option>
+                                                        <option value = "music2">Music2</option>
+                                                        <option value = "music3">Music3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Tools Used</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="<%= project.tools %>" 
+                                                    class="form-control-personal tools"
+                                                    name = "tools"
+                                                    placeholder = "Tools used?" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Skills Used</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="<%= project.skills_used %>" 
+                                                    class="form-control-personal skills"
+                                                    name = "skills"
+                                                    placeholder = "Skills used?" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Tags</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="<%= project.tags %>" 
+                                                    class="form-control-personal genre"
+                                                    name = "tags"
+                                                    placeholder = "#Tags" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>External Link</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="<%= project.main_link %>" 
+                                                    class="form-control-personal"
+                                                    name = "link"
+                                                    placeholder = "External Link if exists" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
+                            <button type="submit" submit-work" class="btn btn-primary">Save</button>
+                            <span class="error"></span>
+                        </form>
+                    </div>
+                    <div class="heading-block">
+                        <h5>Add Media to Project</h5>
+                        <div class="arrow-down arrow "></div>
+                    </div>
+                    <div class = "right-block-padded-container project-add-media">
+                        <ul class="add-media-buttons">
+                            <li><a data-toggle="modal" href="/modals/blog?projectId=<%=project.id %>" data-target="#myBlog"><div class = "icon-container"><i class = "fa fa-pencil"></i></div><div class="add-media-button">+ Blog</div></a></li>
+                            <li><a data-toggle="modal" href="/modals/picture?projectId=<%=project.id %>" data-target="#myPic"><div class = "icon-container"><i class = "fa fa-picture-o"></i></div><div class="add-media-button">+ Pictures</div></a></li>
+                            <li><a data-toggle="modal" href="/modals/video?projectId=<%=project.id %>" data-target="#myVid"><div class = "icon-container"><i class = "fa fa-youtube"></i></div><div class="add-media-button">+ Video</div></a></li>
+                            <li><a data-toggle="modal" href="/modals/audio?projectId=<%=project.id %>" data-target="#myMusic"><div class = "icon-container"><i class = "fa fa-soundcloud"></i></div><div class="add-media-button">+ Audio</div></a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class = "right-block-padded-container">
+                        <form id = "mediaForm" method="post" action="/works/media"> 
+                            <ul id="sortable">
+                                <% media.forEach(function(mediaData){ %>
+                                    <li class="edit-work-media-container">
+                                            <div class = "edit-works-inner-container">
+                                                <div class="media-main">
+                                                    <% if (mediaData.media_type=="image") {%>
+                                                        <img src = "<%= mediaData.link %>">
+                                                    <% } %>
+
+                                                    <% if (mediaData.media_type=="blog") {%>
+
+                                                        <a data-toggle="modal" href="/modals/editblog?projectId=<%=project.id%>&&mediaId=<%=mediaData.id%>" data-target="#myEditBlog" class="blog-edit"><i class="fa fa-edit"></i></a>
+                                                        <div class="blog-outer-container">
+                                                            <div class="blog-inner-container">
+                                                                <%-mediaData.blog%>
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+
+                                                    <% if (mediaData.media_type=="youtube") {%>
+                                                        <div class="youtube-container">
+                                                            <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%-mediaData.link%>" frameborder="0" allowfullscreen></iframe> 
+                                                        </div>
+                                                    <% } %>
+
+                                                    <% if (mediaData.media_type=="soundcloud") {%>
+                                                        <div class="soundcloud-container">
+                                                            <iframe style="margin-bottom:-8px;" width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%-mediaData.link%>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+                                                        </div>
+                                                    <% } %>
+
+                                                </div>
+                                                <input class="form-control-personal first-input-edit-media tohide" type="text" placeholder="add description" name="mediadescription" value="<%= mediaData.description %>">
+                                                <input class="form-control-personal tohide genre" type="text" placeholder="add tags" name="mediatags" value="<%= mediaData.tags %>">
+                                                <input class="form-control-personal position-input" type="hidden" name="position">
+                                                <input class="form-control-personal" type="hidden" name="mediaid" value="<%= mediaData.id %>">
+                                                <div class="dropdown edit-media-settings-button" class="tohide">
+                                                  <i data-toggle="dropdown" class="fa fa-gear tohide" style="position:relative"></i>
+                                                  <ul class="dropdown-menu dropdown-align-right dropdown-padding">
+                                                    <li>Make Project Cover<label class="checkbox"><input type="checkbox" name="projectCover" data-toggle="checkbox" class="project-cover-checkbox" value="<%= mediaData.id %>" <% if(mediaData.id == project.cover){%> checked="checked" <%}%> /></label></li>
+                                                    <li class="delete-media" value="<%=mediaData.id%>">Delete</li>
+                                                  </ul>
+                                                </div>
+                                            </div>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                            <input class="form-control-personal" type="hidden" name="projectId" value="<%= project.id %>">
+                        </form>
+                        <form action="/api/delete/work/<%=project.id%>" method="post" >
+                            <button type="submit" class="btn btn-small btn-danger tohide">Delete</button>
+                        </form>
+                        
+                        <button type="button" class="btn btn-small btn-blue reorder tohide">Re-Order</button>
+                        <button type="submit" value="submit" class="btn btn-small btn-primary tohide save-data">Save</button>
+                        <form action="/works/<%=project.id%>" method="get">
+                            <button type="submit" value="preview" class="btn btn-small btn-primary tohide save-data">Preview</button>
+                        </form>
+                        <button type="button" class="btn btn-small btn-primary donereorder">Done</button>
+                        
+                    </div>    
+        </div>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myBlog" role="dialog" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif" style = "width: 100px;"/></div></div></div></div> 
+    <div class="modal fade" id="myPic" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="myVid" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="myMusic" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="myEditBlog" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+
+
+
+    <div id="musicBlogModal" class="modal fade" role="dialog" style="z-index:100000000">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <form id="formSubmitMusicForBlog" action="#" method="get">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Insert Soundcloud Link</h4>
+              </div>
+              <div class="modal-body">
+                <input type="text" name="" class="form-control music-blog-modal">
+                <div class="soundcloud-viewer-for-blog"></div>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-small" type="submit">Save</button>
+              </div>
+            </div>
+        </form>
+        
+      </div>
+    </div>
+
+
+</body>
+<style>
+      #sortable-1 { list-style-type: none; margin: 0; 
+         padding: 0; width: 25%; }
+      #sortable-1 li { margin: 0 3px 3px 3px; padding: 0.4em; 
+         padding-left: 1.5em; font-size: 17px; height: 16px; }
+      .default {
+         background: #cedc98;
+         border: 1px solid #DDDDDD;
+         color: #333333;
+      }
+   </style>
+<% include ../shared/scripts %>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
+<script src="/js/tags_genre.js"></script>
+<script src="/js/tags_tools.js"></script>
+<script src="/js/tags_skills.js"></script>
+<script src="/js/tags_role.js"></script>
+
+<script>
+$(".add-project-heading").click(function(){
+    if($(".edit-work-container-hide").is(":visible")){
+        $(".edit-work-container-hide").slideUp("slow");
+    }
+    else
+    {
+        $(".edit-work-container-hide").slideDown("slow");
+    }
+})
+
+$(".reorder").click(function(){
+    reorder();
+});
+
+$(".donereorder").click(function(){
+    doneReorder();
+});
+
+function reorder(){
+    $(".tohide").hide(500);
+    $(".donereorder").show(500);
+    $(".edit-work-media-container").css("max-width","200px");
+    $(".edit-works-inner-container").css("padding","3px");
+    $("#sortable").css("text-align","left");
+}
+
+function doneReorder(){
+    $(".tohide").show(500);
+    $(".donereorder").hide(500);
+    $(".edit-work-media-container").css("max-width","100%");
+    $(".edit-works-inner-container").css("padding","30px");
+    $("#sortable").css("text-align","center");
+
+    //givePosition();
+}
+
+function givePosition(){
+    var i=1;
+    $(".position-input").each(function(){
+        var self = $(this);
+        self.val(i)
+        i++
+    })  
+}
+
+/*$("#mediaForm").submit(function(){
+    givePosition();
+    return true;
+})*/
+
+$( "#sortable" ).sortable({
+    stop: function() { givePosition()}
+});
+$( "#sortable" ).disableSelection();
+</script>
+
+<script type="text/javascript">
+    $(".save-data").click(function(){
+        givePosition();
+        $("#mediaForm").submit();
+    })
+</script>
+<script type="text/javascript">
+    $(".project-cover-checkbox").click(function(){
+        self = $(this);
+        $(".project-cover-checkbox").prop("checked", false);
+        self.prop("checked", true);
+        console.log(self.val());
+        $.ajax({
+            url:"/api/update/workCover",
+            method: "POST",
+            data:{
+                projectId:<%= project.id %>,
+                coverId:self.val()
+            },
+            success:function(data){
+                console.log("changed successfully");
+            },
+            error: function(err){
+                console.log("error");
+            }
+        })
+    })
+
+    function checkFirstCoverWhenNoCover(){
+        var checked = false;
+        $(".project-cover-checkbox").each(function(){
+            var self = $(this);
+            if (self.prop("checked")){
+                checked = true;
+            }
+        })
+        if(!checked){
+            console.log("checking the first one");
+            $(".project-cover-checkbox:first-child").click();
+        }
+    }
+    checkFirstCoverWhenNoCover();
+</script>
+<script type="text/javascript">
+      $('#myEditBlog').on('hidden.bs.modal', function (e) {
+        var self = $(this);
+        self.removeData('bs.modal');
+      })
+</script>
+<script type="text/javascript">
+    $(".delete-media").click(function(){
+        console.log("working here");
+        var self = $(this);
+        var mediaId=self.val();
+        console.log(mediaId)
+        $.ajax({
+            url:'/api/delete/media/'+mediaId,
+            method:'POST',
+            success:function(data){
+                console.log("success");
+                self.parent().parent().parent().parent().fadeOut(300, 
+                function(){ 
+                    $(this).remove();
+                });
+            },
+            error:function(err){
+                console.log(err);
+                console.log("err");
+            }
+        })
+        console.log();
+    })
+</script>
+</html>

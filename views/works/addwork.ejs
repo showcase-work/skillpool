@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ../shared/styles %>
+    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
+
+
+<title>Skillpool | Personal settings</title>
+
+</head>
+<body>
+    <% include ../navbar/navbar-main %>
+    <div class="container main-custom-container"> 
+
+        <% include ../shared/settings-sidebar %>
+
+        <div class = "right-block user-settings-container add-work-container">
+                    <div class="heading-block add-project-heading">
+                        <h5>Add Project Details</h5>
+                        <div class="arrow-down arrow"></div>
+                    </div>
+                    <div class = "right-block-padded-container add-work-container-hide">
+                        <form method = "post" class="add-work-form" >
+
+                            <ul class="form-content">
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Project Title *</label>
+                                                </td>
+                                                <td class="project-title">
+                                                    <input type="text" 
+                                                    value="" 
+                                                    class="form-control-personal"
+                                                    name = "title"
+                                                    placeholder = "Project Title" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table class="textareawithnumber">
+                                            <tr>
+                                                <td>
+                                                    <label>Description</label>
+                                                </td>
+                                                <td>
+                                                    <textarea 
+                                                    type="text"
+                                                    class="form-control-personal"
+                                                    name = "description"
+                                                    placeholder = "Describe your project"></textarea>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Role</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="" 
+                                                    class="form-control-personal role"
+                                                    name = "role"
+                                                    placeholder = "Your role? Graphic Designer, etc" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Project Domain</label>
+                                                </td>
+                                                <td>
+                                                    <select 
+                                                        value="" 
+                                                        class="form-control-personal "
+                                                        name = "type"
+                                                        placeholder = "college start year?"
+                                                        id = "type">
+                                                        <option value = "music" >Music</option>
+                                                        <option value = "music2">Music2</option>
+                                                        <option value = "music3">Music3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Tools Used</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="" 
+                                                    class="form-control-personal tools"
+                                                    name = "tools"
+                                                    placeholder = "Tools used?" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Skills Used</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="" 
+                                                    class="form-control-personal skills"
+                                                    name = "skills"
+                                                    placeholder = "Skills used?" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Tags</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="" 
+                                                    class="form-control-personal genre"
+                                                    name = "tags"
+                                                    placeholder = "#Tags" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>External Link</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" 
+                                                    value="" 
+                                                    class="form-control-personal"
+                                                    name = "link"
+                                                    placeholder = "External Link if exists" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <span class="error"></span>
+                        </form>
+                    </div>
+                    <div class="heading-block">
+                        <h5>Add Media to Project</h5>
+                        <div class="arrow-down arrow "></div>
+                    </div>
+                    <div class = "right-block-padded-container project-add-media">
+                        <ul class="add-media-buttons">
+                            <li><a data-toggle="modal" href="/modals/blog" data-target="#myBlog"><div class = "icon-container"><i class = "fa fa-pencil"></i></div><div class="add-media-button">+ Blog</div></a></li>
+                            <li><a data-toggle="modal" href="/modals/picture" data-target="#myPic"><div class = "icon-container"><i class = "fa fa-picture-o"></i></div><div class="add-media-button">+ Pictures</div></a></li>
+                            <li><a data-toggle="modal" href="/modals/video" data-target="#myVid"><div class = "icon-container"><i class = "fa fa-youtube"></i></div><div class="add-media-button">+ Video</div></a></li>
+                            <li><a data-toggle="modal" href="/modals/audio" data-target="#myMusic"><div class = "icon-container"><i class = "fa fa-soundcloud"></i></div><div class="add-media-button">+ Audio</div></a></li>
+                        </ul>
+                    </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myBlog" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif" style = "width: 100px;"/></div></div></div></div> 
+    <div class="modal fade" id="myPic" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="myVid" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="myMusic" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+</body>
+<% include ../shared/scripts %>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
+<script src="/js/tags_genre.js"></script>
+<script src="/js/tags_tools.js"></script>
+<script src="/js/tags_skills.js"></script>
+<script src="/js/tags_role.js"></script>
+
+<script>
+var projectId = null;
+var submitted = false;
+$(".add-work-form").on("submit", function(e){
+    var self = $(this);
+    var formdata = self.serialize();
+    e.preventDefault();
+    $.ajax({
+        method:"POST",
+        url:"/works/add-work/",
+        data: formdata,
+        success:function(data){
+            if(!submitted){
+                $(".add-work-container-hide").slideUp("slow");
+                console.log(data);
+                projectId = data.id;
+                
+                $(".add-media-buttons li a").each(function(){
+                    self = $(this);
+                    var href = self.attr("href");
+                    self.attr("href", href+"?projectId="+data.id);
+                })
+                
+                $(".add-project-heading").click(function(){
+                    if($(".add-work-container-hide").is(":visible")){
+                        $(".add-work-container-hide").slideUp("slow");
+                    }
+                    else
+                    {
+                        $(".add-work-container-hide").slideDown("slow");
+                    }
+                })
+                $(".project-title").append("<input type='hidden' value='"+data.id+"' name='projectId'/>");
+                submitted = true;
+            }            
+        }
+    })
+})
+$(".add-media-buttons li a").click(function(e){
+    console.log("working");
+    if(!projectId){
+        $(".error").html("Please save the project before adding media to it");
+        return false;
+    } 
+})
+</script>
+</html>
