@@ -16,6 +16,7 @@
     text-align: center;
     border-bottom: 1px solid #e1e8ed; 
     position: relative;
+    display: none;
 }
 
 .multiple-select-custom

@@ -36,7 +36,7 @@ module.exports = app => {
     Media.belongsTo(User,{foreignKey:"user_id"});
     Media.belongsTo(Work,{foreignKey:"work_id"});
 
-    function getLatestMedia(params){
+    function getLatestMedia(filters){
         return new Promise((resolve, reject) => {
             Media.findAll({
                 raw: true,
@@ -44,24 +44,87 @@ module.exports = app => {
                 order:'id DESC',
                 where:{
                     $and: [
-                        {
-                            '$Work.type$': [
-                                'music2', 'music'
-                            ]
-                        },
-                        /*{
-                            '$Work.skills_used$': [
-                                'learn'
-                            ]
-                        },*/
-                        {
-                            'media_type': [
-                                'image'
-                            ]
-                        }
-
+                        filters
                     ]
-                }
+                },
+                limit:20
+            }).then(function (data) {
+                return resolve(data);
+            }).catch(err => {
+                let errorObject = errorFormatter.createErrorObject({
+                    status: 500,
+                    message: "eror fetching Media - Sequelize",
+                    details: err.message
+                });
+                logger.error(err);
+                return reject(errorObject);
+            });
+        });
+    }
+
+
+    function getMediaDetailsById(id){
+        return new Promise((resolve, reject) => {
+            Media.findAll({
+                raw: true,
+                include: [{model: User},{model: Work}],
+                where:{
+                    id: id
+                },
+                limit:20
+            }).then(function (data) {
+                return resolve(data);
+            }).catch(err => {
+                let errorObject = errorFormatter.createErrorObject({
+                    status: 500,
+                    message: "eror fetching Media - Sequelize",
+                    details: err.message
+                });
+                logger.error(err);
+                return reject(errorObject);
+            });
+        });
+    }
+
+    function getNextId(workId, position){
+        return new Promise((resolve, reject) => {
+            Media.findAll({
+                raw: true,
+                where:{
+                    work_id: workId,
+                    position: {
+                        $gt: position
+                    }
+                },
+                attributes:['id'],
+                limit:1
+            }).then(function (data) {
+                console.log(data);
+                return resolve(data);
+            }).catch(err => {
+                let errorObject = errorFormatter.createErrorObject({
+                    status: 500,
+                    message: "eror fetching Media - Sequelize",
+                    details: err.message
+                });
+                logger.error(err);
+                return reject(errorObject);
+            });
+        });
+    }
+
+    function getPreviousId(workId, position){
+        return new Promise((resolve, reject) => {
+            Media.findAll({
+                raw: true,
+                attributes:['id'],
+                where:{
+                    work_id: workId,
+                    position: {
+                        $lt: position
+                    }
+                },
+                limit:1
             }).then(function (data) {
                 return resolve(data);
             }).catch(err => {
@@ -112,8 +175,6 @@ module.exports = app => {
             var newMedia = Media.build(object);
             newMedia.save()
             .then(media => {
-                console.log("workig and saving in media blog");
-                console.log(media);
                 return resolve(media);
             })
             .catch(err => {
@@ -127,8 +188,6 @@ module.exports = app => {
             var newMedia = Media.build(object);
             newMedia.save()
             .then(media => {
-                console.log("workig and saving in media youtube");
-                console.log(media);
                 return resolve(media);
             })
             .catch(err => {
@@ -139,7 +198,6 @@ module.exports = app => {
 
     function getAllMediaForProject(projectId){
         return new Promise((resolve,reject)=>{
-            console.log("working in get all media");
             Media.findAll({
                 where:{
                     work_id:projectId
@@ -164,10 +222,8 @@ module.exports = app => {
                 }
             }
             ).then(function(data){
-                console.log("updated successfully");
                 return resolve(true);
             }).catch(function(e){
-                console.log("updating faile"+e);
                 return reject(e);
             })
         })
@@ -184,7 +240,6 @@ module.exports = app => {
     }
 
     function deleteMediaByWorkId(projectId, userId){
-        console.log("deleting media");
         return new Promise((resolve, reject)=>{
             Media.destroy({
                 where: {
@@ -192,8 +247,6 @@ module.exports = app => {
                     user_id:userId
                 }
             }).then(data=>{
-                console.log("deleted media");
-                console.log(data);
                 return resolve(data);
             }).catch(err=>{
                 return reject(err);
@@ -206,8 +259,6 @@ module.exports = app => {
             var newMedia = Media.build(object);
             newMedia.save()
             .then(media => {
-                console.log("workig and saving in media soundcloud");
-                console.log(media);
                 return resolve(media);
             })
             .catch(err => {
@@ -218,7 +269,6 @@ module.exports = app => {
 
     function getMediaByUserIdProjectIdAndMediaId(userId, projectId, mediaId){
         return new Promise((resolve,reject)=>{
-            console.log("working in get media");
             Media.findAll({
                 where:{
                     work_id:projectId,
@@ -276,6 +326,9 @@ module.exports = app => {
         getMediaByUserIdProjectIdAndMediaId,
         updateMediaBlog,
         fetchAllMediaDetailsByProjectId,
-        deleteMediaById
+        deleteMediaById,
+        getMediaDetailsById,
+        getPreviousId,
+        getNextId
     };
 };

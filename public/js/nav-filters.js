@@ -2,7 +2,8 @@
         $.fn.applydepartmentfilter = function(){
           $(this).multiselect({
             onInitialized: function(select, container) {
-                                alert('Initialized.');
+                                $(".menu-dashboard").show();
+                                //alert('Initialized.');
             },
             maxHeight: 300,
             enableClickableOptGroups: true,

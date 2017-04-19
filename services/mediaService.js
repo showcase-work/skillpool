@@ -9,25 +9,26 @@ module.exports = app => {
     let comment = app.models.comment;
 
     function fetchAllMedia (params) {
-        var filters = {department:{}, skills:{}}
+        var filters = {}
         if(params.dept_filters){
-            filters.department
+            filters['$Work.type$'] = params.dept_filters;
         }
         if(params.genre_filters){
-            filters.tags
+            filters.tags = params.genre_filters;
         }
         if(params.skills_filters){
-            filters.department
+            filters['$Work.skills_used$'] = params.skills_filters;
         }
-        if(params.media_type){
-            filters.department
+        if(params.type_filters){
+            filters.media_type = params.type_filters;
         }
+
         var length = 0;
         var LikesPromise;
         var CommentsPromise;
         return new Promise((resolve, reject) => {
             Media.getLatestMedia(filters).then(function(data){
-                if(data){
+                if(data.length > 0){
                         data.forEach(function(mediadata){                                    
                                         like.getLikesForMedia(mediadata.id).then((likes)=>{
                                             mediadata.likes=likes;
@@ -53,6 +54,52 @@ module.exports = app => {
                         function resolvedata(){
                             resolve(data);
                         }
+                }
+                else
+                {
+                    reject("no data found");
+                }
+            });
+        });
+    }
+
+    function getMediaDetailsById(id){
+        var length = 0;
+        var LikesPromise;
+        var CommentsPromise;
+        return new Promise((resolve, reject) => {
+            Media.getMediaDetailsById(id).then(function(data){
+                if(data.length > 0){
+                        data.forEach(function(mediadata){  
+                                        Media.getPreviousId(mediadata.work_id, mediadata.position).then((previousMediaId)=>{
+                                            mediadata.previousMediaId = previousMediaId;
+                                        })
+
+                                        Media.getNextId(mediadata.work_id, mediadata.position).then((nextMediaId)=>{
+                                            mediadata.nextMediaId = nextMediaId;
+                                        })
+
+                                        like.getLikesForMedia(mediadata.id).then((likes)=>{
+                                            mediadata.likes=likes;
+                                        });
+
+                                        comment.getCommentsForMedia(mediadata.id).then((comments)=>{
+                                            mediadata.comments=comments;
+                                            length++;
+                                            if(length == data.length){
+                                                resolvedata();
+                                            }
+                                        });
+
+                                });
+
+                        function resolvedata(){
+                            resolve(data);
+                        }
+                }
+                else
+                {
+                    reject("no data found");
                 }
             });
         });
@@ -164,8 +211,6 @@ module.exports = app => {
     function getMediaByUserIdProjectIdAndMediaId(userId, projectId, mediaId){
         return new Promise((resolve, reject)=>{
             Media.getMediaByUserIdProjectIdAndMediaId(userId, projectId, mediaId).then(data=>{
-                console.log("working in mefdia");
-                console.log(data);
                 return resolve(data);
             }).catch(err=>{
                 return reject(err);
@@ -185,7 +230,6 @@ module.exports = app => {
 
     function deleteMediaById(mediaId, userId){
         return new Promise((resolve,reject)=>{
-            console.log("working in service");
             Media.deleteMediaById(mediaId, userId).then(data=>{
                 return resolve(data);
             }).catch(err=>{
@@ -205,6 +249,7 @@ module.exports = app => {
         getMediaByUserIdProjectIdAndMediaId,
         updateMediaBlog,
         fetchAllMediaDetailsByProjectId,
-        deleteMediaById
+        deleteMediaById,
+        getMediaDetailsById
     };
 };

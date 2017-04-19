@@ -53,16 +53,13 @@
 
     <div class = "grid-item">
         <div class = "dashboard-works-preview">
-            <a data-toggle="modal" href = "media_viewer.php?media_id=<%- media_id; %>" data-target="#mediaviewer_modal">
+            <a data-toggle="modal" href = "/modals/preview?media_id=<%- media_id; %>" data-target="#preview">
                 <% 
                 if (media_type == "youtube")
                 {
-                    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-                    var match = media[i].link.match(regExp);
-                    var youtube_id = (match&&match[7].length==11)? match[7] : false;
                 %>
                     <div class = "youtube">
-                        <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%- youtube_id; %>" frameborder="0" allowfullscreen></iframe> 
+                        <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%- media_link; %>" frameborder="0" allowfullscreen></iframe> 
                         <div class ="youtube-opn">
                            <span class ="fui-resize youtube-open">
                            </span>

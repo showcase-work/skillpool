@@ -33,6 +33,11 @@ module.exports = app => {
         return res.render("modals/video", {user:req.user, tab:'works', projectId:req.query.projectId});
     });
 
+    router.route("/preview").get((req, res, next) => {
+        console.log("media_id_is"+req.query.media_id);
+        workController.getMediaPreview(req, res, next);
+    })
+
   
     return router;
 };

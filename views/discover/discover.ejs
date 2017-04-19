@@ -23,11 +23,11 @@
                 <form id="navFiltersForm" class = "filter" method = "get" action = "">
 
                     <select id="multiple_filter_departments" multiple="multiple">
-                      <option value="music">Music</option>
-                      <option value="videography">Videography</option>
-                      <option value="photography">Photography</option>
-                      <option value="art/design">Art/Design</option>
-                      <option value="writing">Writing</option>
+                      <option value = "music" >Music</option>
+                      <option value = "photography">photography</option>
+                      <option value = "videography">videography</option>
+                      <option value = "writing">Writing</option>
+                      <option value = "artDesign">Art/Design</option>
                     </select>
                 
                  
@@ -53,12 +53,10 @@
                     <select id = "multiple_filter_type" multiple = "multiple">
                         <option value="soundcloud">Audio</option>
                         <option value="youtube">Video</option>
-                        <option value="picture">Picture</option>
-                        <option value="writing">Writing</option>
-                        <option value="status">Status</option>
+                        <option value="image">Picture</option>
+                        <option value="blog">Writing</option>
+                        <!-- <option value="status">Status</option> -->
                     </select>
-
-                    <button type="submit" name="issubmit" value="asd">submit</button>
                 </form>
 
                <% if(user && user != null && user.name != null){ %>
@@ -97,6 +95,8 @@
             </div>
 
     </div>
+
+    <div class="modal fade" id="preview" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
 
 </body>
 

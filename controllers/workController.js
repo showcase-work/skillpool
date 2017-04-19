@@ -238,6 +238,17 @@ module.exports = app => {
         })
     }
 
+    function getMediaPreview(req, res, next){
+        var mediaId = req.query.media_id;
+        mediaService.getMediaDetailsById(mediaId)
+        .then(data=>{
+            //res.send(data[0])
+            res.render("modals/preview", {mediaData:data[0]});
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
     return {
         uploadMultipleImages,
         getWorkEditPage,
@@ -254,6 +265,7 @@ module.exports = app => {
         getMediaAndRenderBlog,
         updateMediaBlog,
         renderProjectPreviewPage,
-        deleteMedia
+        deleteMedia,
+        getMediaPreview
     }
 }
