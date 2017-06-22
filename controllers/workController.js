@@ -5,9 +5,10 @@ module.exports = app => {
     let imagesService = app.services.cloudinary;
     let mediaService = app.services.mediaService;
     let workService = app.services.workService;
+    let tagsService = app.services.tagsService;
 
     function fetchAllMedia (req, res, next) {
-            mediaService.fetchAllMedia()
+            mediaService.fetchAllMedia({},req.user)
             .then(data => {
                 res.send(data);
             }).catch(err => next(err));
@@ -30,9 +31,10 @@ module.exports = app => {
             }
         }).then(function(images){
             return mediaService.uploadImages(images,projectId,userId);
-        }).then((data)=>{
-            //return res.render("usersettings/addwork", {user:req.user, tab:'works', media:data, project:workData});
-            res.send(projectId);
+        }).then((isUploaded)=>{
+            if(isUploaded){
+                res.send(projectId);
+            }
         }).catch(err=>{
             console.log(err);
             next(err);
@@ -61,6 +63,7 @@ module.exports = app => {
 
     function addWork(req,res,next){
         workService.addWork(req.body, req.user.id).then(function(data){
+            tagsService.checkAndAddTags(req.body.tags);
             res.send(data);
         }).catch(err=>{
             console.log(err);
@@ -69,6 +72,7 @@ module.exports = app => {
 
     function updateWork(req,res,nect){
         workService.updateWork(req.body, req.user.id).then(function(data){
+            tagsService.checkAndAddTags(req.body.tags);
             res.redirect("/works/edit-work?id="+req.body.projectId);
         }).catch(err=>{
             console.log(err);
@@ -76,9 +80,11 @@ module.exports = app => {
     }
 
     function updateMedia(req,res,next){
-        console.log("hehrhehehehehehe");
-        console.log(req.body);
         workService.updateMedia(req.body,req.user.id).then((data)=>{
+            console.log(data);
+            console.log("working??");
+            //console.log({media:data, projectId:req.body.projectId});
+            //res.render("works/addMediaToEditWorks", {media:data, projectId:req.body.projectId});
             res.redirect("/works/edit-work?id="+req.body.projectId);
         }).catch(err=>{
             console.log(err);
@@ -140,10 +146,8 @@ module.exports = app => {
     function deleteMedia(req, res, next){
         var userId = req.user.id;
         var mediaId = req.params.id;
-        console.log("wokring in delete controller");
         mediaService.deleteMediaById(mediaId, userId)
         .then(data=>{
-            console.log(data);
             if(data){
                 res.send(true);
             }
@@ -230,7 +234,7 @@ module.exports = app => {
             res.send(data);
         })*/
 
-        workService.fetchAllMediaDetailsByProjectId(projectId).then(data=>{
+        workService.fetchAllMediaDetailsByProjectId(projectId,req.user).then(data=>{
             //res.send(data);
             res.render("works/preview", {title:"Skillpool | Discover", user:req.user, tab:'works', project:data});
         }).catch(err=>{
@@ -240,10 +244,91 @@ module.exports = app => {
 
     function getMediaPreview(req, res, next){
         var mediaId = req.query.media_id;
-        mediaService.getMediaDetailsById(mediaId)
-        .then(data=>{
+        mediaService.getMediaDetailsById(mediaId, req.user)
+        .then(data=>{   
             //res.send(data[0])
-            res.render("modals/preview", {mediaData:data[0]});
+            //res.send(data[0]);
+            res.render("modals/preview", {mediaData:data, user:req.user});
+        }).catch(err=>{
+            console.log(err);
+            next(err);
+        })
+    }
+
+    function likeMedia(req,res,next){
+        mediaService.likeMedia(req.body.id, req.user.id)
+        .then(data=>{
+            res.send(data);
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
+    function unlikeMedia(req,res,next){
+        mediaService.unlikeMedia(req.body.id, req.user.id)
+        .then(data=>{
+            if(data ==1){
+                res.send(req.body.id);
+            }
+        }).catch(err=>{
+            console.log(err);
+            next(err);
+        })
+    }
+
+    function commentOnMedia(req,res,next){
+        mediaService.commentOnMedia(req.body, req.user)
+        .then(data=>{
+            res.send(data);
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
+    function deleteCommentFromMedia(req,res,next){
+        mediaService.deleteCommentFromMedia(req.body, req.user.id)
+        .then(data=>{
+            if(data==1){
+                res.send(true);
+            }
+            else
+            {
+                res.send(false);
+            }
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
+    function addToFavoriteListForMedia(req,res,next){
+        mediaService.addToFavoriteList(req.body, req.user.id, "Media")
+        .then((data)=>{
+            res.send(data);
+        })
+        .catch(err=>{
+            next(err);
+        })
+    }
+
+    function deleteFromFavoriteListForMedia(req,res,next){
+        mediaService.deleteFromFavoriteList(req.body, req.user.id)
+        .then((data)=>{
+            if(data){
+                res.send(true);
+            }
+            else
+            {
+                res.send(false)
+            }
+        })
+        .catch(err=>{
+            next(err);
+        })
+    }
+
+    function getShareModal(req,res,next){
+        mediaService.getMediaById(req.query.id).then(data=>{
+            return res.render("modals/skillpoolShareModal",{media:data})
         }).catch(err=>{
             next(err);
         })
@@ -266,6 +351,13 @@ module.exports = app => {
         updateMediaBlog,
         renderProjectPreviewPage,
         deleteMedia,
-        getMediaPreview
+        getMediaPreview,
+        likeMedia,
+        unlikeMedia,
+        commentOnMedia,
+        deleteCommentFromMedia,
+        addToFavoriteListForMedia,
+        deleteFromFavoriteListForMedia,
+        getShareModal
     }
 }

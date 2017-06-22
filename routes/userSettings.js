@@ -38,6 +38,7 @@ module.exports = app => {
     });
 
     router.route("/department-skills").post((req,res,next) => {
+        console.log(req.body);
         return userController.updateDepartmentAndSkillsDetails(req,res,next);
     })
 

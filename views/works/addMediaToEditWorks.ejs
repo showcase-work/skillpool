@@ -1,0 +1,52 @@
+<% media.forEach(function(mediaData){ %>
+    <li class="edit-work-media-container">
+            <div class = "edit-works-inner-container">
+                <div class="media-main">
+                    <% if (mediaData.media_type==1) {%>
+                        <img src = "<%= mediaData.link %>">
+                    <% } %>
+
+                    <% if (mediaData.media_type==2) {%>
+
+                        <a data-toggle="modal" href="/modals/editblog?projectId=<%=projectId%>&&mediaId=<%=mediaData.id%>" data-target="#myEditBlog" class="blog-edit"><i class="fa fa-edit"></i></a>
+                        <div class="blog-outer-container">
+                         <div class="blog-inner-container">
+                                <%-mediaData.blog%>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <% if (mediaData.media_type==3) {%>
+                        <div class="youtube-container">
+                            <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%-mediaData.link%>" frameborder="0" allowfullscreen></iframe> 
+                        </div>
+                    <% } %>
+
+                    <% if (mediaData.media_type==4) {%>
+                        <div class="soundcloud-container">
+                            <iframe style="margin-bottom:-8px;" width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%-mediaData.link%>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+                        </div>
+                    <% } %>
+
+                </div>
+                <input class="form-control-personal first-input-edit-media tohide" type="text" placeholder="add description" name="mediadescription" value="<%= mediaData.description %>">
+                
+                <input 
+                class="form-control-personal tohide genre multipleInputDynamicTags" 
+                type="text" 
+                placeholder="add tags" 
+                name="mediatags" 
+                multiple data-url="/api/lists/tags" 
+                data-load-once="true">
+                <input class="form-control-personal position-input" type="hidden" name="position">
+                <input class="form-control-personal" type="hidden" name="mediaid" value="<%= mediaData.id %>">
+                <div class="dropdown edit-media-settings-button" class="tohide">
+                  <i data-toggle="dropdown" class="fa fa-gear tohide" style="position:relative"></i>
+                  <ul class="dropdown-menu dropdown-align-right dropdown-padding">
+                    <li>Make Project Cover<label class="checkbox"><input type="checkbox" name="projectCover" data-toggle="checkbox" class="project-cover-checkbox" value="<%= mediaData.id %>"/></label></li>
+                    <li class="delete-media" value="<%=mediaData.id%>">Delete</li>
+                  </ul>
+                </div>
+            </div>
+    </li>
+<% }) %>

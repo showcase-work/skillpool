@@ -1,247 +1,253 @@
-        <%
-            var media_id = mediaData.id;
-        %>        
+<%
+    var media_id = mediaData.id;
+    var media_type = mediaData.media_type;
+    var likes_count = mediaData.likes.length;
+    var comments = mediaData.comments;
+    var comments_count = comments.length;
 
-        <div class = "media-left-view">
-
-            <div class = "left-nav">
-                <% if(mediaData.previousMediaId.length >0){ %>
-                    <button class = "media-viewer-nav-button" value = "<%= mediaData.previousMediaId[0].id %>"><</button>
-                <%} %>
-            </div>
-
-
-            <div class = "media-inside-viewer">
-
-                <% if (mediaData.media_type == "youtube"){ %>
-
-                     <div class = "youtube">
-                     <iframe id = "yt-player" style="margin-bottom:-10px;" width="100%" height="500px;" src="https://www.youtube.com/embed/<%= mediaData.link %>" frameborder="0" allowfullscreen></iframe>
-                     </div>
-
-                <% } %>
-                 
-
-                <% if (mediaData.media_type == "blog"){ %>
-
-                      <div class = "media_viewer_blog_popup">
-                            <%- mediaData.blog %>
-                      </div>
-
-                <% } %>
-
-                <% if (mediaData.media_type == "image"){ %>
-                
-                        <img src ="<%= mediaData.link %>" />
-
-                <% } %>
-
-                <% if (mediaData.media_type == "soundcloud"){ %>
-                
-                        <iframe id = "sc-player" style = "margin-bottom:-10px" width="100%" height="500" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%= mediaData.link %>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
-
-                <% } %>
-
-            </div>
+    var like_str = "like";
+    var comment_str = "comment";
+    var save_str = "save";
+    var mediaLists = mediaData.lists;
+    if(mediaLists.length >=1){
+      save_str = "favorited";
+    }
 
 
-            <div class = "right-nav ">
-                <% if(mediaData.nextMediaId.length >0){ %>
-                    <button class = "media-viewer-nav-button" value = "<%= mediaData.nextMediaId[0].id %>">></button>
-                <%  } %>
-            </div>
+    var customLists = [];
+
+    if(user){
+      var user_id = user.id;
+        mediaData['likes'].forEach(function(like){
+          if(like['User.id']==user_id){
+            like_str = "unlike";
+          }
+        })
+
+        mediaData['comments'].forEach(function(comment){
+          if(comment['User.id']==user_id){
+            comment_str = "commented";
+          }
+        })
+
+        customLists = user.lists;
+    }
+%>        
+
+<div class = "media-left-view">
+
+    <div class = "left-nav">
+        <% if(mediaData.nextMediaId.length >0){ %>
+            <button class = "media-viewer-nav-button" value = "<%= mediaData.nextMediaId[0].id %>"><</button>
+        <%} %>
+    </div>
+
+
+    <div class = "media-inside-viewer">
+
+        <% if (media_type == 3){ %>
+
+             <div class = "youtube">
+             <iframe id = "yt-player" style="margin-bottom:-10px;" width="100%" height="500px;" src="https://www.youtube.com/embed/<%= mediaData.link %>" frameborder="0" allowfullscreen></iframe>
+             </div>
+
+        <% } %>
+         
+
+        <% if (media_type == 2){ %>
+
+              <div class = "media_viewer_blog_popup">
+                    <%- mediaData.blog %>
+              </div>
+
+        <% } %>
+
+        <% if (media_type == 1){ %>
+        
+                <img src ="<%= mediaData.link %>" />
+
+        <% } %>
+
+        <% if (media_type == 4){ %>
+        
+                <iframe id = "sc-player" style = "margin-bottom:-10px" width="100%" height="500" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%= mediaData.link %>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+
+        <% } %>
+
+    </div>
+
+
+    <div class = "right-nav ">
+        <% if(mediaData.previousMediaId.length >0){ %>
+            <button class = "media-viewer-nav-button" value = "<%= mediaData.previousMediaId[0].id %>">></button>
+        <%  } %>
+    </div>
+
+</div><div 
+class = "media-right-view">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+    <div class = "media-viewer-description">
+        <div class = "user-details">
+            <table>
+                <tr>
+                    <td valign = "top">
+                        <img class = "media-viewer-user-img" src = "<%= mediaData['User.image']%>"/>
+                    </td>
+                    <td valign = "top" class = "artist-name">
+                        <%= mediaData['User.name']%>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class = "media-details">
+
+            <%
+            if(mediaData['Work.title'])
+            { %>
+                <a class = "title" href = "/works/preview?id=<%=media_id%>"><%= mediaData['Work.title'] %></a></br >
+            <%
+            } %>
+
+            <%
+            if(mediaData['Work.description'])
+            { %>
+                <div class = "description">
+                    <%= mediaData['Work.description'] %>
+                </div>
+            <%   
+            } %>
+
+            <%
+            if(mediaData.tags)
+            { %>
+                <div class ="genres-container-preview">
+                    <%
+                        var genres = mediaData.tags.split(',');
+                        genres.forEach(function(genre){ 
+                    %>
+                        <a class = "genres" href ="#" >#<%=genre %></a>
+                    <%
+                        })
+                    %>
+                </div>
+            <%
+            } %>
 
         </div>
 
 
-        <div class = "media-right-view">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div class ="lcsb-dashboard">
 
-            <div class = "media-viewer-description">
+                <table>
+                    <tr>
 
-                        <div class = "media-user-details">
-                            <table>
-                                <tr>
-                                    <td valign = "top">
-                                        <img class = "media-viewer-user-img" src = "<%= mediaData['User.image']%>"/>
-                                    </td>
-                                    <td valign = "top" class = "media-viewer-artist-name">
-                                        <%= mediaData['User.name']%>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <td>
+                          <button title="<%- like_str; %>" value = "<%- media_id; %>" class = "likemedia likemedia<%=media_id%> <%- like_str; %>"><i class ="fa fa-thumbs-o-up"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <a href ="#"><%- likes_count; %></a>
+                        </td>
 
-                        <div class = "media-media-details">
 
-                            <%
-                            if(mediaData['Work.title'])
-                            { %>
-                                <a class = "media-viewer-work-title" href = "../works/preview.php?id=<?php echo $work_id; ?>"><%= mediaData['Work.title'] %></a></br >
-                            <%
-                            } %>
+                        <td>
+                          <button title="<%- comment_str; %>" class="commentinput commentinput<%=media_id%> <%=comment_str%>">
+                                <i class ="fa fa-comment-o"></i>
+                          </button>
+                        </td>
+                        <td>
+                            <a href="#">
+                                <%= comments_count %>
+                            </a>
+                        </td>
 
-                            <%
-                            if(mediaData['Work.description'])
-                            { %>
-                                <div class = "media-viewer-media-description">
-                                    <%= mediaData['Work.description'] %>
-                                </div>
-                            <%   
-                            } %>
+                        <td>
+                          <div class="dropdown"><button  title="share" class="dropdown-toggle" data-toggle="dropdown"><i class ="fa fa-share-alt"></i></button>
+                              <ul class="dropdown-menu">
+                                <li><a href="#">Facebook</a></li>  
+                                <li><a href="#">Twitter</a></li> 
+                                <li><a data-toggle="modal" href = "../sharing_content/share_media_skillpool?media_id=<?php echo $media_id; ?>" class = "share_with_skillpool" data-target="#skillpool_share_modal">Skillpool</a></li> 
+                              </ul>
+                          </div>
+                        </td>   
+                        <td>
+                          <a href ="#" class = "sharecount">12</a>
+                        </td>
 
-                            <%
-                            if(mediaData.tags)
-                            { %>
-                                <div class ="genre-media-viewer">
+
+                        <td>
+                            <div class="dropdown">
+                                <button title="Save to Lists" class="dropdown-toggle  <%- save_str;%> favorite<%- media_id%>" data-toggle="dropdown">
+                                  <i class ="fa fa-star-o"></i>
+                                </button>
+
+                                    <% if(customLists.length>0){ %>
+                                        <ul class="list-ul-div<%- media_id;%> dropdown-menu lists_list" media_id = "<%- media_id; %> ">
+                                            <% customLists.forEach(function(list){ 
+                                                var list_name = list.list_name;
+                                                var list_id = list.id;
+                                              %>
+                                                <li>
+                                                  <div class = "save<%- list_id;%> save-to-list 
+
+                                                  <%if(mediaLists.indexOf(list_id) > -1){ %>
+
+                                                    saved
+
+                                                   <% } else { %>
+                                                    save
+                                                    <%} %>
+                                                  " value = "<%- list_id; %>" >
+                                                    <%- list_name;%>
+                                                  </div>
+                                                  <!-- <div class = "new_lists<%- media_id; %> new_lists">
+                                                  </div> -->
+                                                </li>
+                                                
+                                            <% }) %>
+                                                <li>
+                                                  <a data-toggle="modal" href = "../comment_like_share_list/list/add_new_list_inline?media_id=<%- media_id;%>&type=<%- media_type;%>&list_for=media" class = "add_new_list_inline" data-target="#skillpool_share_modal">
+                                                    <div class = "add-new-list">New List</div>
+                                                  </a>
+                                                </li>
+                                        </ul>
                                     <%
-                                        var genres = mediaData.tags.split(',');
-                                        genres.forEach(function(genre){ 
+                                    } 
                                     %>
-                                        <a class = "genres" href ="#" >#<%=genre %></a>
-                                    <%
-                                        })
-                                    %>
-                                </div>
-                            <%
-                            } %>
+                            </div>
+                        </td>
 
-                        </div>
-
-
-                        <div class ="media-viewer-lcsb-dashboard">
-
-                                <table>
-                                    <tr>
-
-                                        <td>
-                                          <button title="like" value = "<%= media_id %>" class = "like">
-                                                <i class ="fa fa-thumbs-o-up"></i>
-                                          </button>
-                                        </td>
-                                        <td>
-                                          <a href ="#"><% mediaData.likes.length %></a>
-                                        </td>
-
-
-                                        <td>
-                                          <button title="comment" class="comment">
-                                                <i class ="fa fa-comment-o"></i>
-                                          </button>
-                                        </td>
-                                        <td>
-                                            <% mediaData.comments.length %>
-                                        </td>
-
-                                        <td>
-                                          <div class="dropdown"><button  title="share" class="dropdown-toggle" data-toggle="dropdown"><i class ="fa fa-share-alt"></i></button>
-                                              <ul class="dropdown-menu">
-                                                <li><a href="#">Facebook</a></li>  
-                                                <li><a href="#">Twitter</a></li> 
-                                                <li><a data-toggle="modal" href = "../sharing_content/share_media_skillpool.php?media_id=<?php echo $media_id; ?>" class = "share_with_skillpool" data-target="#skillpool_share_modal">Skillpool</a></li> 
-                                              </ul>
-                                          </div>
-                                        </td>   
-                                        <td>
-                                          <a href ="#" class = "sharecount">12</a>
-                                        </td>
-
-
-                                        <td>
-                                            <div class="dropdown">
-                                                <button title="<?php echo $save_str; ?>" class="dropdown-toggle  <?php echo $save_str; ?>" data-toggle="dropdown">
-                                                  <i class ="fa fa-star-o <?php echo $save_str; ?> "></i>
-                                                </button>
-                                                <ul class="list-ul-div<?php echo $media_id;?> dropdown-menu lists_list" value = "<?php echo $media_id; ?>" id = "<?php echo $media_type; ?> ">
-                                                    <?php   
-                                                    while($list = mysql_fetch_array($lists))
-                                                    {
-                                                      $list_name = $list['list_name'];
-                                                      $list_id = $list['id'];
-                                                      $saved_str = get_is_listed($list_id, $media_id, $user_id);
-                                                      ?>
-                                                      <li>
-                                                        <div class = "save<?php echo $list_id;?> save-to-list <?php echo $saved_str; ?>" value = "<?php echo $list_id; ?>" >
-                                                          <?php echo $list_name; ?>
-                                                        </div>
-                                                      </li>
-                                                      <?php
-                                                    } ?>
-                                                    <div class = "new_lists<?php echo $media_id;?> new_lists">
-                                                    </div>
-                                                    <li>
-                                                      <a data-toggle="modal" href = "../comment_like_share_list/list/add_new_list_inline.php?media_id=<?php echo $media_id;?>&type=<?php echo $media_type;?>&list_for=media" class = "add_new_list_inline" data-target="#skillpool_share_modal">
-                                                        <div class = "add-new-list">New List</div>
-                                                      </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-
-
-                                    </tr>
-                                </table>
-
-
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td style = "width:100%">
-                                                <div class ="share-box" style = "width: 100%">
-
-                                                    <form id ="comment-form" method ="post" >
-                                                        <div style= "position:relative; font-size:10px; display:inline-block; width: 100%;">
-                                                            <textarea rows = "1" type = "text" name ="comment-comment" class ="textarea" placeholder="Write a comment" ></textarea>
-                                                        </div>
-                                                        <input type="hidden" name="media_id" value="<?php echo $media_id; ?>">
-                                                    </form>
-
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type = "submit" class ="comment-submit" id = "<?php echo $media_id; ?>"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                    
-                        </div>
-
-                        <div class = "comment-box<?php echo $media_id;?> comments-box " style = "display: block;">
-                            <?php
-
-                            while($comment = mysql_fetch_array($comment_query))
-                            {
-                                $comment_id = $comment['id'];
-                                $commentor_id = $comment['user_id'];
-                                $comment = $comment['comment'];
-                                $commentor_data = get_user_data_by_user_id($commentor_id);
-                                    $commentor_username = $commentor_data['unique_username'];
-                                    $commentor_name = $commentor_data['username'];
-                                    $commentor_image = $commentor_data['image'];
-                               ?>
-                                <div class = "comments-table-wrap">
-                                    <?php
-                                    if($commentor_id == $user_id || $artist_id == $user_id)
-                                    {
-                                        echo "<div class =\"delete-comment\" value = \"{$comment_id}\" id = \"{$media_id}\">";
-                                            echo "X";
-                                        echo "</div>";
-                                    } ?>
-                                    <table class = "comments-table">
-                                        <tr>
-                                            <td class ="commentor-pic" valign="top">
-                                                <img src =<?php echo " \"../img/users/{$commentor_username}/profile_pic/{$commentor_image}\" "; ?> style = "width:30px;"/>
-                                            </td>
-                                            <td valign="top" class = "comments-names" style = "white-space: pre-wrap;"><?php echo $commentor_name.": ";?><span style ="color: #2C3E50; word-wrap: break-word;"><?php echo $comment;?></span></td>
-                                            
-                                        </tr>
-                                    </table>
-                                </div>
-                            <?php
-                            } ?>
-
-                        </div>
-            </div>
-
+                    </tr>
+                </table>
+                <form id ="commentMediaForm" method ="post" action="/works/media/comment/add" >
+                    <textarea rows = "1" type = "text" name ="comment" class ="textarea" placeholder="Write a comment" ></textarea><input type="hidden" name="media_id" value="<%=media_id%>"><button type="submit" class="btn btn-primary">Submit</button>
+                </form>            
         </div>
+        <div class = "comments-container comments-container<%=media_id%>">
+            <%comments.forEach(function(comment){%>
+                <div class = "comments-table-wrap">
+                    <%if(user){
+                        if(comment.user_id == user.id){%>
+                            <div class ="delete-comment" value="<%=comment.id%>" media_id="<%=media_id%>">X</div>
+                        <%}
+                    }%>
+                    <table class = "comments-table">
+                        <tr>
+                            <td valign="top">
+                                <a href="/user/<%=comment['User.username']%>">
+                                    <img class="commentor-pic" src ="<%=comment['User.image']%>"/>
+                                </a>
+                            </td>
+                            <td valign="top" class = "commentor-name"><a href="/user/<%=comment['User.username']%>"><%=comment['User.name']%>:</a> <span class="comment"><%-comment.comment%></span></td>
+                        </tr>
+                    </table>
+                </div>
+            <%});%>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".textarea").tagpeople();
+</script>

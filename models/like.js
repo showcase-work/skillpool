@@ -38,9 +38,25 @@ module.exports = app => {
             });
     }
 
+    function likeMedia(mediaId, userId){
+        var newLike = Like.build({media_id:mediaId, user_id:userId});
+        return newLike.save();  
+    }
+
+    function unlikeMedia(mediaId, userId){
+        return Like.destroy({
+            where: {
+                media_id:mediaId,
+                user_id:userId
+            }
+        })
+    }
+
 
     return {
         Like,
-        getLikesForMedia
+        getLikesForMedia,
+        likeMedia,
+        unlikeMedia
     };
 };

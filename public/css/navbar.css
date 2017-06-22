@@ -142,3 +142,51 @@ li.edit-profile-nav-dropdown a:hover{
 .navbar .dropdown-menu{
   right:5px;
 }
+
+.loginModal .modal-header{
+  text-align: center;
+  border-bottom: none;
+}
+
+.loginModal .modal-header h4{
+  font-weight: 300;
+  font-size: 34px;
+}
+
+.loginModal .modal-body{
+  text-align: center;
+  padding-bottom: 28px;
+  padding-top: 6px;
+}
+
+.loginModal .modal-body button{
+  color:white;
+  background-color: #3b5997;
+  border-radius: 6px;
+  padding:4px;
+  border:none;
+  padding-bottom: 0px;
+}
+
+.loginModal .modal-body button i{
+  padding:5px;
+  border-right: 1px solid rgba(0,0,0,0.5);
+  font-size: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+} 
+
+.loginModal .modal-body button span{
+  padding:5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 16px;
+  display: inline-block;
+  position: relative;
+  top: -3px;
+}
+
+.loginModal  .close{
+  margin-left: -10px;
+}

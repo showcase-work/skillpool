@@ -38,7 +38,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 <li class="special-navbar-button"><a href="/">Dashboard</a></li>
-
+                <li><a data-toggle="modal" href = "/modals/complete-profile" data-target="#loginModal">asd</a></li>
 
                 <li class="edit-profile-nav">
                   <li class=" edit-profile-nav"><a href="chat.php" ><span class="fui-chat"></span></a></li>           
@@ -84,7 +84,7 @@
                   </li>
                 <% } %>
                 <% if(!user){%>
-                <li class="special-navbar-button login-main-button" data-toggle="modal" data-target="#myModal"><a>Login</a>
+                <li class="special-navbar-button login-main-button" data-toggle="modal" data-target="#loginModal"><a>Login</a>
                 </li>
                 <% } %>
             </ul>
@@ -93,7 +93,7 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -116,6 +116,24 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
         <button type="button" class="btn btn-primary login-local">Login</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!--  New Login ONly Facebook Modal -->
+
+<div class="modal fade loginModal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Log Into Skillpool</h4>
+      </div>
+      <div class="modal-body">
+        <div class = "social-login-options">
+            <button class="social-login-icon facebook-login-button"><i class="fa fa-facebook"></i><span>Log in with Facebook</span></button>
+        </div>
       </div>
     </div>
   </div>

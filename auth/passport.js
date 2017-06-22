@@ -54,7 +54,6 @@ module.exports = app => {
         // we are checking to see if the user trying to login already exists
 
             console.log("checking for user")
-            console.log(req.user);
             if(!req.user){
                 User.find({ where: {email: email} }).then(function(user) {
 
@@ -121,9 +120,9 @@ module.exports = app => {
             clientID        : configAuth.facebookAuth.clientID,
             clientSecret    : configAuth.facebookAuth.clientSecret,
             callbackURL     : configAuth.facebookAuth.callbackURL,
-            scope:['email'],
-            passReqToCallback : true
-
+            passReqToCallback : true,
+            profileFields: ['id', 'email', 'birthday','gender', 'link', 'name', 'displayName','education','hometown','location','work','friends','likes','picture'],
+            scope: ['email','user_friends','user_birthday', 'user_work_history','public_profile','user_location','user_hometown','user_education_history','user_likes']
         },
         // facebook will send back the token and profile
         function(req, token, refreshToken, profile, done) {
@@ -138,8 +137,6 @@ module.exports = app => {
                 }
 
                 console.log("checking for user")
-                console.log(req.user);
-                console.log("checking for user")
 
                 if(!req.user){
                     User.find({
@@ -150,32 +147,25 @@ module.exports = app => {
                             ]
                       }
                     }).then(user=>{
-                        console.log(user);
                         if (user) {
                             console.log("working in building if user exists")
-                            console.log(user);
-                            if(user.facebook != null){
-                                return done(null, user);
-                            }   
-                            else
+                            console.log(profile);
+                            User.update(
                             {
-                                User.update(
-                                {
-                                    facebook: profile._json
-                                },
-                                {
-                                    where: { 
-                                        id:user['id']
-                                    }
+                                facebook: profile._json
+                            },
+                            {
+                                where: { 
+                                    id:user['id']
                                 }
-                                ).then(function(){
-                                    console.log("updated successfully");
-                                    return done(null, user);
-                                }).catch(function(e){
-                                    console.log("updating faile"+e);
-                                    return done(err);
-                                })
                             }
+                            ).then(function(){
+                                console.log("updated successfully");
+                                return done(null, user);
+                            }).catch(function(e){
+                                console.log("updating faile"+e);
+                                return done(err);
+                            })
                         } else {
                             // if there is no user found with that facebook id, create them
                             var name = profile.name.givenName + ' ' + profile.name.familyName;
@@ -183,7 +173,6 @@ module.exports = app => {
                               name: profile.displayName,
                               email: emailid,
                               role: 'user',
-                              image, photo,
                               image: profile.picture,
                               gender:profile.gender,
                               facebook: profile._json,
@@ -205,6 +194,7 @@ module.exports = app => {
                 }
                 else
                 {   
+                    console.log("profile updating");
                     var userId = req.user.id;
 
                     User.update(
@@ -218,7 +208,6 @@ module.exports = app => {
                     }
                     ).then(function(updateduser){
                         console.log("updated successfully");
-                        console.log(updateduser);
                         return done(null, updateduser);
                     }).catch(function(e){
                         console.log("updating faile"+e);
@@ -248,16 +237,12 @@ module.exports = app => {
             }
             if(profile.photos && profile.photos.length>0){
                 photo = profile.photos[0].value.replace("_normal","");
-                console.log(photo);
             }
 
             // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Twitter
             process.nextTick(function() {
 
-                console.log("checking for user")
-                console.log(req.user);
-                console.log(req.user);
                 if(!req.user){
 
                     User.find({
@@ -270,7 +255,6 @@ module.exports = app => {
                     }).then(user=>{
                         if (user) {
                             console.log("working in building if user exists")
-                            console.log(user);
                             if(user.twitter != null){
                                 return done(null, user);
                             }   
@@ -333,7 +317,6 @@ module.exports = app => {
                         }
                     }
                     ).then(function(updateduser){
-                        console.log(updateduser);
                         console.log("updated successfully");
                         return done(null, updateduser);
                     }).catch(function(e){
@@ -380,7 +363,6 @@ module.exports = app => {
                 if(profile.photos != undefined && profile.photos.length>0){
                     photo = profile.photos[0].value.replace("sz=50","");
                 }
-                console.log(req.user);
                 
                 if(!req.user){
                     User.find({
@@ -393,7 +375,6 @@ module.exports = app => {
                     }).then(user=>{
                         if (user) {
                             console.log("working in building if user exists")
-                            console.log(user);
                             if(user.google != null){
                                 return done(null, user);
                             }   

@@ -43,25 +43,13 @@ module.exports = app => {
     };
 
 
-
-    router.route('/local').post(passport.authenticate(
-        'local-login', { 
-         session: false 
-     }),serialize, getToken, respond);
-
     router.route('/facebook/').get(passport.authenticate('facebook', 
         { 
-            profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified'],
-            scope: ['email'],
+            profileFields: ['id', 'email', 'birthday','gender', 'link', 'name', 'displayName','education','hometown','location','work','friends','likes','picture'],
+            scope: ['email','user_friends','user_birthday', 'user_work_history','public_profile','user_location','user_hometown','user_education_history', 'user_likes'],
             failureRedirect: '/',
             session: false,
         }));
-
-    router.route('/twitter').get(passport.authenticate('twitter'));
-
-    router.route('/google').get(passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-
 
     //callbacks
     router.route('/facebook/callback').get(
@@ -71,41 +59,6 @@ module.exports = app => {
             session: false,
             display: 'popup'
         }),  serialize, getToken, respondAndClose);
-
-    
-    router.route('/twitter/callback').get(
-        userController.authenticateAndAttachUser,
-        passport.authenticate('twitter', {
-            failureRedirect : '/',
-            session: false
-        }),  serialize, getToken, respondAndClose);
-
-    
-    router.route('/google/callback').get(
-            userController.authenticateAndAttachUser,
-            passport.authenticate('google', {
-                //successRedirect : '/profile',
-                failureRedirect : '/',
-                session: false
-            }),serialize, getToken, respondAndClose);
-
-
-    //social connects
-
-    router.route('/connect/facebook').get(passport.authorize('facebook', { scope : 'email' }));
-    router.route('/connect/twitter').get(passport.authorize('twitter', { scope : 'email' }));
-    router.route('/connect/google').get(passport.authorize('google', { scope : ['profile', 'email'] }));
-
-
-    router.route('/disconnect/facebook').get(userController.authenticateAndAttachUser,(req,res,next)=>{
-        return userController.unlinkAccount(req,res,next,'facebook')
-    });
-    router.route('/disconnect/twitter').get(userController.authenticateAndAttachUser,(req,res,next)=>{
-        return userController.unlinkAccount(req,res,next,'twitter');
-    });
-    router.route('/disconnect/google').get(userController.authenticateAndAttachUser,(req,res,next)=>{
-        return userController.unlinkAccount(req,res,next,'google');
-    });
     
     return router;
 };

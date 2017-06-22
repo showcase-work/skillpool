@@ -107,14 +107,13 @@
   border: 1px solid #e1e8ed;
   border-radius: 6px;
   box-shadow: none;
-  margin:2px;
   padding: 8px 12px;
-  width:100%;
+  text-align: left;
 }
 
 .user-settings-container textarea{
     height:100px;
-    margin-bottom: -5px;
+    margin-bottom: 0px;
 }
 
 .textarea-count
@@ -186,29 +185,6 @@
   display:inline-block;
 }
 
-.dept-edit{
-  display:inline-block;
-  vertical-align: top;
-  margin-left: auto;
-  margin-right: auto;
-  width: 15em;
-  width: 200px;
-  padding: 10px;
-  text-align: left;
-}
-
-.edit-skills h3{
-  font-size: 16px;
-}
-
-.skills-list{
-  display:none;
-}
-
-.skills-padded-container{
-  display:none;
-}
-
 .social-media-list-connection td{
   text-align: left;
   width:50%!important;
@@ -231,12 +207,10 @@
 
 
 
-
-
 /*work css*/
 .settings-work-card{
   display:inline-block;
-  width:33.333%;
+  width:32.333%;
   min-width:245px;
   padding-right: 5px;
   padding-bottom: 5px;
@@ -384,6 +358,7 @@
 
 .add-work-container textarea{
   height:80px;
+  margin-bottom: 0px;
 }
 
 .add-work-container .heading-block{
@@ -490,4 +465,69 @@
 .modal-content .container{
   padding-top: 15px !important;
   padding-bottom: 15px !important;
+}
+
+form.button-style{
+  display: inline-block;
+}
+
+
+.work-settings-block .block{
+  background-color: white;
+  border:1px solid #e1e8ed;
+}
+
+.work-settings-block .block .sub-works ul{
+  display: flex;
+  width:100%;
+  align-items: stretch;
+}
+
+.work-settings-block .block .sub-works li{
+  display: inline-block;
+  font-size: 13px;
+  padding:10px;
+  flex:1;
+  text-align: center;
+  border-right: 1px solid #e1e8ed;
+}
+
+.work-settings-block .block .sub-works li i{
+  margin-right: 5px;
+}
+
+.group-selection div{
+  padding:5px;
+  font-size: 15px;
+  color:#34495e;
+  width:100px;
+  text-align: center;
+}
+
+.group-selection div.option1{
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.group-selection div.option2{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+
+}
+
+
+.select-gender.selected{
+  background-color: #1abc9c;
+  color:white;
+}
+
+.group-selection{
+  display: flex;
+  border-radius: 5px;
+  border:1px solid #e1e8ed;
+  cursor: pointer;
+}
+
+.group-selection.gender{
+  width:200px;
 }

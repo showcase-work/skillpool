@@ -24,27 +24,27 @@
 
                     <h5>Select Your Departments</h5>
 
-                            <% departments.forEach(function(department){ %>
-                                <div class="row dept-edit">
-                                    <div class="col-xs-3 text-edit">
-                                        <label class="checkbox">
-                                            <input type="checkbox" class="department-checkboxes" value= "<%= department.id %>" name = "departments" data-toggle="checkbox"
-                                            <%
+                    <% departments.forEach(function(department){ %>
+                        <div class="row dept-edit">
+                            <div class="col-xs-3 text-edit">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="department-checkboxes" value= "<%= department.id %>" name = "departments" data-toggle="checkbox"
+                                    <%
 
-                                            var index = -1;
-                                            if(user.departments && user.departments != null){
-                                                var user_departments = user.departments.split(',');
-                                                index = user_departments.indexOf(department.id.toString());
-                                            }
-                                            
-                                            if(index > -1){ %>
-                                                checked = "checked"
-                                            <%}%>
-                                            ><%= department.name %>
-                                        </label>
-                                    </div>
-                                </div>
-                            <% }) %>
+                                    var index = -1;
+                                    if(user.departments && user.departments != null){
+                                        var user_departments = user.departments.split(',');
+                                        index = user_departments.indexOf(department.id.toString());
+                                    }
+                                    
+                                    if(index > -1){ %>
+                                        checked = "checked"
+                                    <%}%>
+                                    ><%= department.name %>
+                                </label>
+                            </div>
+                        </div>
+                    <% }) %>
 
                 </div>
 

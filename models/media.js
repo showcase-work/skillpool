@@ -36,7 +36,7 @@ module.exports = app => {
     Media.belongsTo(User,{foreignKey:"user_id"});
     Media.belongsTo(Work,{foreignKey:"work_id"});
 
-    function getLatestMedia(filters){
+    function getLatestMedia(filters, pageNumber, noOfEntries){
         return new Promise((resolve, reject) => {
             Media.findAll({
                 raw: true,
@@ -47,7 +47,8 @@ module.exports = app => {
                         filters
                     ]
                 },
-                limit:20
+                limit:noOfEntries,
+                offset:noOfEntries*pageNumber
             }).then(function (data) {
                 return resolve(data);
             }).catch(err => {
@@ -99,7 +100,6 @@ module.exports = app => {
                 attributes:['id'],
                 limit:1
             }).then(function (data) {
-                console.log(data);
                 return resolve(data);
             }).catch(err => {
                 let errorObject = errorFormatter.createErrorObject({
@@ -124,7 +124,8 @@ module.exports = app => {
                         $lt: position
                     }
                 },
-                limit:1
+                limit:1,
+                order: "position DESC"
             }).then(function (data) {
                 return resolve(data);
             }).catch(err => {
@@ -202,31 +203,27 @@ module.exports = app => {
                 where:{
                     work_id:projectId
                 },
-                order:'position'
+                order:'position',
+                raw:true
             }).then(data=>{
                 return resolve(data);
             }).catch(err=>{
+                console.log(err);
                 return reject(err);
             })
         })
     }
 
-    function updateMedia(parmas, id, userId){
-        return new Promise((resolve,reject)=>{
-            Media.update(
-            parmas,
-            {
-                where: { 
-                    id:id,
-                    user_id:userId
-                }
-            }
-            ).then(function(data){
-                return resolve(true);
-            }).catch(function(e){
-                return reject(e);
-            })
-        })
+    function updateMedia(parms, id, userId, projectId){
+            return Media.update(
+                parms,
+                {
+                    where: { 
+                        id:id,
+                        work_id:projectId,
+                        user_id:userId
+                    }
+                });
     }
 
     function getMediaById(id){

@@ -40,7 +40,8 @@ module.exports = app => {
         facebook: Sequelize.JSON,
         twitter: Sequelize.JSON,
         google: Sequelize.JSON,
-        facebook_id: Sequelize.STRING
+        facebook_id: Sequelize.STRING,
+        gender:Sequelize.STRING
         },
         {
             tableName: "users",
@@ -69,8 +70,6 @@ module.exports = app => {
     });
 
     function updateProfilePicture(url,id){
-        console.log(url);
-        console.log(id);
         console.log("working in model now ");
         return new Promise(function (resolve, reject) {
             User.update(
@@ -93,14 +92,7 @@ module.exports = app => {
     }
 
     function getme(id){
-        return new Promise((resolve,reject)=>{
-            console.log("working in getme model");
-            console.log(id);
-
-            User.findById(id).then(user=>{
-                return resolve(user);
-            })
-        })
+           return User.findById(id);
     }
 
     function updatePersonalDetails(params, id){
@@ -112,7 +104,8 @@ module.exports = app => {
                 contact:params.contact,
                 city:params.city,
                 college:params.college,
-                course:params.course
+                course:params.course,
+                gender:params.gender
             },
             {
                 where: { 
@@ -130,7 +123,6 @@ module.exports = app => {
     }
 
     function updateDepartmentAndSkillsDetails(params, id){
-
         return new Promise((resolve,reject)=>{
             User.update(
             {
@@ -182,12 +174,48 @@ module.exports = app => {
         })
     }
 
+    function getUserFriends(userId){
+        return User.findAll({
+                raw: true,
+                attributes:['id', 'name', 'username', 'image']
+                /*where: {
+                    media_id: media_id
+                },*/
+        });
+    }
+
+    function checkUsernameAvailability(username){
+        return User.findAll({
+            raw:true,
+            where:{
+                username:username
+            }
+        })
+    }
+
+    function updateUsername(username, id){
+        console.log("working in here changing username");
+        return User.update(
+        {
+            username:username
+        },
+        {
+            where: { 
+                id:id
+            }
+        }
+        );
+    }
+
     return {
         User,
         updateProfilePicture,
         updatePersonalDetails,
         updateDepartmentAndSkillsDetails,
         unlinkAccount,
-        getme
+        getme,
+        getUserFriends,
+        checkUsernameAvailability,
+        updateUsername
     };
 };

@@ -38,9 +38,29 @@ module.exports = app => {
             });
     }
 
+    function commentOnMedia(comment, mediaId, userId){
+        return Comment.build({
+            user_id:userId,
+            media_id:mediaId,
+            comment:comment
+        }).save();
+    }
+
+    function deleteCommentFromMedia(id, mediaId, userId){
+        return Comment.destroy({
+            where:{
+                id:id,
+                media_id:mediaId,
+                user_id:userId
+            }
+        })
+    }
+
 
     return {
         Comment,
-        getCommentsForMedia
+        getCommentsForMedia,
+        commentOnMedia,
+        deleteCommentFromMedia
     };
 };

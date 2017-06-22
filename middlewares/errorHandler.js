@@ -9,13 +9,15 @@ module.exports = app => {
             res.json(err);
         });
     }
+    else if(app.get("env") === "production"){
+        app.use((err, req, res, next) => {
+            res.status(err.status);
+            res.json(err);
+
+        });
+    }
 
 // production error handler
-    app.use((err, req, res, next) => {
-        res.status(err.status);
-        delete err.details;
-        res.json(err);
-
-    });
+    
 
 };

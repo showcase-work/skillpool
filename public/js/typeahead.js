@@ -1484,7 +1484,8 @@
                 this._checkLanguageDirection();
             },
             resetInputValue: function resetInputValue() {
-                this.setInputValue(this.query);
+                this.setInputValue("");
+                //this.setInputValue(this.query);
             },
             getHint: function getHint() {
                 return this.$hint.val();

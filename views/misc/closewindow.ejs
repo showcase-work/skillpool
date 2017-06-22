@@ -16,6 +16,8 @@
     {
         createCookie('token', '<%= token %>', 900000);
     }
-    window.opener.location.reload();
+    window.opener.completeProfilePage();
+    console.log("all good here");
+    //window.opener.location.reload();
     window.close();
 </script>

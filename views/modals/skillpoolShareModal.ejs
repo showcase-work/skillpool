@@ -1,0 +1,75 @@
+<%
+  var media_type=media.media_type;
+  var media_id = media.id;
+  var type=media.type;
+%>
+<body>
+    <div class = "container">
+    <form id ="skillpool_share_form" method = "POST" action = "api/share/skillpool">
+
+        <div style= "position:relative; font-size:10px; width: 100%;"><textarea rows = "2" type = "text" name ="main_text" id = "share_with_skillpool" class ="textarea" placeholder="Write a comment"></textarea>
+        </div>
+
+        <div class = "skillpool_share_bg" style = "background-color: black;">
+          <% 
+          if (media_type == "youtube")
+          {
+          %>
+              <div class = "youtube" style="width:100%; height:500px;">
+                  <!-- <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%- media_link; %>" frameborder="0" allowfullscreen></iframe>  -->
+                  <div class="youtube-player" data-id="<%- media_link; %>">
+                    
+                  </div>
+
+                  <div class ="youtube-opn">
+                     <span class ="fui-resize youtube-open">
+                     </span>
+                  </div>
+              </div>
+
+          <%
+          } 
+          %>
+
+          <%
+          if (media_type == "blog")
+          {
+          %>
+          
+              <div class="blog-outer-container restricted">
+                  <div class="blog-inner-container">
+                      <%- blog; %>
+                  </div>
+              </div>
+
+          <%
+          }
+          %>
+          <%
+          if (media_type == "image")
+          { %>
+            <div class = "image-viewer" >
+              <img class="image-viewer-img" style = "width: 100%;" src ="<%- media_link %>"/> 
+            </div>
+          <%
+          } %>
+
+          <%
+          if (media_type == "soundcloud")
+          {
+          %>
+          <iframe style = "margin-bottom:-8px" width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%- media_link; %>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+          <div class ="youtube-opn">
+               <span class ="fui-resize soundcloud-open">
+               </span>
+          </div>
+          <%
+          } 
+          %>
+        </div>
+        <input type = "hidden" name = "media_id" value = "<%=media_id %>" />
+        <input type = "hidden" name = "media_type" value = "<%=media_type %>" />
+        <button class="btn btn-primary" type="submit">Share</button>
+    </form>
+  </div>
+</body>

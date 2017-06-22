@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ../shared/styles %>
-    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
 
 
 <title>Skillpool | Personal settings</title>
@@ -23,158 +22,214 @@
             <div class = "right-block-padded-container">
                   <h5>Edit your Personal Information</h5>
 
-                  <form action = "/user-settings/" method = "post" >
+                  <form action = "/user-settings/" method = "post" id="personalDetailsForm" >
 
                     <ul class="form-content">
                         <li>
                             <div class="form-group-personal">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <label>Your Name</label>
-                                        </td>
-                                        <td>
-                                            <input type="text" 
-                                            value="<%= user.name %>" 
-                                            class="form-control-personal"
-                                            name = "name"
-                                            placeholder = "Your Name" />
-                                        </td>
-                                    </tr>
-                                </table>
+                                
+                                <label>Your Name*</label><input type="text" 
+                                value="<%= user.name %>" 
+                                class="form-control-personal"
+                                name = "name"
+                                placeholder = "Your Name"
+                                data-validation="required" />
+                            
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="form-group-personal usernameinputgroup">
+                                
+                                <label>Username*</label><input type="text" 
+                                value="<%= user.username %>" 
+                                class="form-control-personal usernameinput"
+                                name = "username"
+                                placeholder = "Set Username"
+                                data-validation="required length"
+                                data-validation-length="min5"
+                                 />
+                                 <img src="/images/loader.gif">
+                            
                             </div>
                         </li>
 
                         <li>
                             <div class="form-group-personal">
-                                <table class="textareawithnumber">
-                                    <tr>
-                                        <td>
-                                            <label>About</label>
-                                        </td>
-                                        <td>
-                                            <textarea 
-                                            cols="5" 
-                                            rows="2" 
-                                            type="text"
-                                            onkeyup="textCounter(this,'counter',70);"
-                                            maxlength = "70"
-                                            class="form-control-personal despt"
-                                            name = "about"
-                                            placeholder = "Describe yourself in a line"><%= user.about %></textarea>
-                                            <input class="textarea-count" disabled  maxlength="3" size="3" value="70" id="counter">
-                                        </td>
-                                    </tr>
-                                </table>
-                                <script>
-                                function textCounter(field,field2,maxlimit)
-                                {
-                                 var countfield = document.getElementById(field2);
-                                 if ( field.value.length > maxlimit ) {
-                                  field.value = field.value.substring( 0, maxlimit );
-                                  return false;
-                                 } else {
-                                  countfield.value = maxlimit - field.value.length;
-                                 }
-                                }
-                                </script>
+                                
+                                <label>Email</label><input type="text" 
+                                value="<%= user.email %>" 
+                                class="form-control-personal"
+                                placeholder = "Your Name" readonly/>
+                            
                             </div>
                         </li>
 
                         <li>
                             <div class="form-group-personal">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <label>Contact no.</label>
-                                        </td>
-                                        <td>
-                                            <input type="text" 
-                                            value="<%= user.contact %>" 
-                                            class="form-control-personal"
-                                            name = "contact"
-                                            placeholder = "Your contact no."
-                                            maxlength = 10/>
-                                        </td>
-                                    </tr>
-                                </table>
+                               
+                                <label>Contact no.</label><input type="text" 
+                                value="<%= user.contact %>" 
+                                class="form-control-personal"
+                                name = "contact"
+                                placeholder = "Your contact no."
+                                maxlength = 10/>
+
                             </div>
                         </li>
 
                         <li>
-                            <div class = "form-group-personal-tags">
-                              <table>
-                                <tr>
-                                    <td>
-                                        <label>City</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" 
-                                        value="<%= user.city %>" 
-                                        name = "city"
-                                        id = "city"
-                                        placeholder="Enter your City"
-                                        autocomplete="off"/>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div class = "form-group-personal">
+                              
+                                <label>Country</label><input type="text" 
+                                value="<%= user.country %>" 
+                                name = "country"
+                                class="form-control-personal"
+                                id = "country"
+                                placeholder="Enter your Country"
+                                autocomplete="off"/>
+                            
                             </div>
                         </li>
 
                         <li>
-                            <div class = "form-group-personal-tags">
-                              <table>
-                                <tr>
-                                    <td>
-                                        <label>College Name</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" 
-                                        value="<%= user.college %>" 
-                                        name = "college"
-                                        id = "college" 
-                                        placeholder="Enter College Name"
-                                        autocomplete="off"/>
-                                    </td>
-                                </tr>
-                              </table>
+                            <div class = "form-group-personal">
+                              
+                                <label>City</label><input type="text" 
+                                value="<%= user.city %>" 
+                                name = "city"
+                                class="form-control-personal"
+                                id = "city"
+                                placeholder="Enter your City"
+                                autocomplete="off"/>
+                            
                             </div>
                         </li>
 
                         <li>
-                            <div class = "form-group-personal-tags">
-                                <table>
-                                <tr>
-                                    <td>
-                                        <label>Course</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" 
-                                        value="<%= user.course %>" 
-                                        class="form-control-personal"
-                                        name = "course"
-                                        id = "course" 
-                                        placeholder="Enter Course"
-                                        autocomplete="off"/>
-                                    </td>
-                                </tr>
-                              </table>
+                            <div class = "form-group-personal">
+                                
+                                <label>Gender</label><div class="group-selection-container">
+                                    <div class="group-selection gender">
+                                        <div class="male select-gender option1 <%if(user.gender=="male"){%>selected<%} %>" value="male">Male</div>
+                                        <div class="female select-gender option2 <%if(user.gender=="female"){%>selected<%} %>" value="female">Female</div>
+                                        <input type="hidden" name="gender" value="male">
+                                    </div>
+                                </div>
+                                
+                            
                             </div>
                         </li>
 
                     </ul>
 
-                    <button type = "submit" name = "save" value = "Save" class="btn btn-primary ">Done</button>
+                    <button type = "submit" name = "save" value = "Save" class="btn btn-primary ">Save</button>
 
-                    <a href = "/user-settings/picture" class = "btn btn-primary btn-login submit-personal">Next</a>
                 </form>
             </div>
         </div>
     </div>
 </body>
 <% include ../shared/scripts %>
-<script src="/js/typeahead.js"></script>
-<script src="/js/tags_course.js"></script>
-<script src="/js/tags_college.js"></script>
-<script src="/js/tags_city.js"></script>
+<script type="text/javascript">
+    $(".select-gender").click(function(){
+        var self = $(this);
+        $(".select-gender").removeClass("selected");
+        self.addClass("selected");
+        $(".group-selection.gender input").val(self.attr("value"));
+    })
+</script>
+<script type="text/javascript">
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 600;  //time in ms, 5 second for example
+    var $input = $(".usernameinput");
+    var unique = true;
+
+    $input.on('keyup', function(){
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    })
+    $input.on('keydown', function () {
+      clearTimeout(typingTimer);
+      $(".usernameinputgroup img").show();
+
+      $(".usernameinputgroup img").attr("src","/images/loader.gif");
+      $(".usernameinputgroup span").remove();
+      $(".usernameinputgroup input").css("border-color","#e1e8ed");
+
+    });
+    function doneTyping () {
+        var usernameToCheck = $input.val();
+        if(usernameToCheck == ""){
+            unique = false;
+            $(".usernameinputgroup img").attr("src","/images/cancel.png");
+        }
+        else
+        {
+            $.ajax({
+                url:"/api/user/check-username-availability",
+                method:"POST",
+                data:{
+                    username:usernameToCheck
+                },
+                success: function(data){
+                    console.log(data)
+                    if(data){
+                        unique = true;
+                        $(".usernameinputgroup img").attr("src","/images/tick.png");
+                    }
+                    
+                },
+                error:function(err){
+                    unique = false;
+                    $(".usernameinputgroup img").attr("src","/images/cancel.png");
+                }
+
+            })
+        }
+    }
+
+    $("#personalDetailsForm").submit(function(e){
+        var self = $(this);
+        console.log(unique);
+        if(!self.isValid() || !unique){
+            if(!unique ){
+                $(".usernameinputgroup").addClass("has-error");
+                $(".usernameinputgroup").css("boder-color","rgb(185, 74, 72)");
+                $(".usernameinputgroup").append('<span class="help-block form-error">This username is already taken</span>');
+            }
+            return false;
+        }
+        else
+        {
+            $.ajax({
+                url:"/api/user/user-settings/",
+                method:"POST",
+                data:self.serialize(),
+                success:function(data){
+                    console.log(data);
+
+                    var asd = $.notify({
+                        message: 'Updated Successfully' 
+                    },{
+                        type: 'success',
+                        delay: 100,
+                        animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                        }
+                    });
+                    console.log(asd);
+                },
+                error:function(err){
+                    console.log(err);
+                }
+
+            })
+            return false;
+
+        }
+    })
+
+</script>
 </html>

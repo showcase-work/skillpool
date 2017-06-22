@@ -35,9 +35,11 @@ module.exports = app => {
     function fetchAllDepartments(){
         return new Promise((resolve,reject)=>{
             Department.findAll({
-                raw: true,
-                include: [{model: Skill}],
-                order:['position']
+                where:{
+                    visible:1
+                },
+                order:['position'],
+                raw:true
             }).then((data)=>{
                 return resolve(data);
             }).catch((err)=>{
@@ -47,9 +49,7 @@ module.exports = app => {
     }
 
     function getDepartmentsById(departmentIdsArray){
-        console.log("working in skills model");
-        console.log(departmentIdsArray);
-
+        console.log("huhu");
         return new Promise((resolve,reject)=>{
             Department.findAll({
                 where:{

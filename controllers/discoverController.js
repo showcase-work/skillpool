@@ -4,11 +4,11 @@ module.exports = app => {
     let mediaService = app.services.mediaService;
 
     function fetchPagesForDiscover (req, res, next) {
-        console.log("query is asd asd");
-            mediaService.fetchAllMedia(req.query)
+            mediaService.fetchAllMedia(req.query, req.user)
             .then(data => {
+                //res.send(data);
                 res.render("discover/fetch-pages-for-discover",{media:data, user:req.user});
-            }).catch(err => console.log(err));
+            }).catch(err => next(err));
     };
     
     return {

@@ -1,44 +1,86 @@
 <script type="text/javascript">
-  function updateData(data){
-    $('.fetched_data_container').html(data);
+  var pageNumber = 1;
+  function updateData(data, isNew){
+    if(isNew){
+      $('.fetched_data_container').html(data);
+    }
+    else
+    {
+      $('.fetched_data_container').append(data);
+    }
+    
+    //$(".grid").applymasonry();
+    //$(".grid").reapplymasonry();
+    $('.fetched_data_container').fadeIn();
     $(".grid").imagesLoaded( function() {
+
         $(".grid").applymasonry();
         $(".grid").reapplymasonry();
+
     });
 
-    $('body').on('hidden.bs.modal', '.modal', function () {
-       $(this).removeData('bs.modal');
-     });
   }
+
+  $('body').on('hidden.bs.modal', '.modal', function () {
+       $(this).removeData('bs.modal');
+  });
+
+  function showError(err){
+    console.log(err);
+    $('.fetched_data_container').html(err);
+  }
+
 
   $('#navFiltersForm').submit(function(e){
     var self = $(this);
+    var forminfo = self.serialize();
+
     $.ajax({
       url: "/discover/fetch-pages-for-discover",
       method: "GET",
-      data: self.serialize(),
+      data: forminfo+"&page_number="+pageNumber,
       success:function(data){
-        updateData(data);
+        if(pageNumber > 1){
+          updateData(data, false);
+        }
+        else
+        {
+          updateData(data, true);
+        }
+        //window.history.pushState({},"", "?"+forminfo);
       },
-      error: function(err){
-        console.log(err);
+      error: function(err, ajaxOptions, thrownError){
+        showError(err.responseJSON.details.message.message);
       }
     })
     e.preventDefault();
   });
 
-  function fetchFilteredData(){
-    console.log("fetching filtered data");
-    var url = 
+  function fetchdata(pageNum){
+    pageNumber = pageNum;
     $('#navFiltersForm').submit();
   }
+
+
+  /*function fetchdata(){
+    console.log("working here man really well")
+    element = $('.filter');
+    track_click = 0;
+    $.ajax({
+      url: '/discover/fetch-pages-for-discover',
+      type: 'GET',
+      cache: false,
+      beforeSend: function(){
+        $('.fetched_data_container').html('Loading...');
+      },
+      success: function(data){
+              updateData(data)
+        }
+      });
+  }*/
+
 </script>
-<script type="text/javascript" src = "js/imagesloaded.pkgd.min.js"></script>
-<script type="text/javascript" src="js/masonry.js"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
-
-<script type="text/javascript" src="js/nav-filters.js"></script>
 <script>
     $('#multiple_filter_departments').applydepartmentfilter();
     $('#multiple_filter_genres').applygenresfilter();
@@ -71,27 +113,349 @@
   }(jQuery));
 </script>
 <script>
+var options;
 $(document).ready(function(){
-    function fetchdata(){
-      console.log("working here man really well")
-      element = $('.filter');
-      track_click = 0;
-          $.ajax({
-            url: '/discover/fetch-pages-for-discover',
-            type: 'GET',
-            cache: false,
-            beforeSend: function(){
-              $('.fetched_data_container').html('Loading...');
-            },
-            success: function(data){
-                    updateData(data)
-              }
-            });
-        }
-
-        fetchdata();
-
-
-
+        fetchdata(1);
+        $.getJSON("/api/user/friends", function(json){
+            options = json;
+        });
 })
+</script>
+
+<script type="text/javascript">
+  $(document).on('click',".left-nav", function(){
+        self = $(this);
+        var id = self.children().val();
+        console.log(id);
+        $('#preview .modal-content').load("/modals/preview?media_id="+id);
+  });
+  $(document).on('click',".right-nav", function(){
+        self = $(this);
+        var id = self.children().val();
+        console.log(id);
+        $('#preview .modal-content').load("/modals/preview?media_id="+id);
+  });
+</script>
+<script type="text/javascript">
+  $(".load-more-discover").click(function(){
+    pageNumber++;
+    fetchdata(pageNumber);
+  })
+</script>
+<script type="text/javascript">
+  $(document).on("click", ".likemedia", function(){
+    self = $(this);
+    var likeId = self.val();
+    var countContainer = self.parent().next().children();
+    var count = parseInt(countContainer.html());
+      if(self.hasClass("like")){
+        $.ajax({
+        url:"/works/media/like/add",
+        method:"POST",
+        data: {
+          id:likeId
+        },
+        success:function(data){
+          $(".likemedia"+data.media_id).removeClass("like");
+          $(".likemedia"+data.media_id).addClass("unlike");
+          $(".likemedia"+data.media_id).parent().next().children().html(count+1);
+          self.removeClass("like");
+          self.addClass("unlike");
+        },
+        error:function(err){
+          console.log(err);
+        }
+      })
+    }
+    else
+    {
+      $.ajax({
+        url:"/works/media/like/delete",
+        method:"POST",
+        data: {
+          id:likeId
+        },
+        success:function(media_id){
+          $(".likemedia"+media_id).removeClass("unlike");
+          $(".likemedia"+media_id).addClass("like");
+          $(".likemedia"+media_id).parent().next().children().html(count-1);
+        },
+        error:function(err){
+          console.log(err);
+        }
+      })
+    }
+  });
+
+  $(document).on("click", ".delete-comment", function(){
+    var self = $(this);
+    var media_id=self.attr("media_id")
+    $.ajax({
+      url:"/works/media/comment/delete",
+      method:"POST",
+      data:{
+        id:self.attr("value"),
+        media_id:self.attr("media_id")
+      },
+      success: function(data){
+        if(data){
+          console.log(data);
+          self.parent().remove();
+          var count = parseInt( $(".commentinput"+media_id).parent().next().children().html());
+          count = count-1;
+          if(count == 0){
+            console.log("commentinput"+media_id);
+            $(".commentinput"+media_id).removeClass("commented");
+            $(".commentinput"+media_id).addClass("comment");
+          }
+          $(".commentinput"+media_id).parent().next().children().html(count);
+        }
+      },
+      error:function(err){
+        console.log(err);
+      }
+    })
+  })
+
+
+  $(document).on("keypress", "#commentMediaForm", function(e){
+      if(e.which == 13) {
+              //submit form via ajax, this is not JS but server side scripting so not showing here
+             console.log("working?");
+             $("#commentMediaForm").submit();
+             console.log("working?");
+          }
+  });
+
+
+  $(document).on("submit", "#commentMediaForm", function(){
+
+      var self = $(this);
+      var formData = self.serialize();
+      //todo: add id to value
+      //add a href to name
+      $.ajax({
+        url:"/works/media/comment/add",
+        method:"POST",
+        data:formData,
+        success:function(data){
+          var html = '<div class = "comments-table-wrap"><div class ="delete-comment" value="'+data.id+'" media_id="'+data.media_id+'">X</div><table class = "comments-table"><tr><td valign="top"><a href="/user/'+data.user.username+'"><img class="commentor-pic" src ="'+data.user.image+'"/></a></td><td valign="top" class = "commentor-name"><a href="/user/'+data.user.username+'">'+data.user.name+'</a>: <span class="comment">'+data.comment+'</span></td></tr></table></div>';
+          $(".comments-container"+data.media_id).append(html);
+          console.log("commentinput"+data.media_id);
+          $(".commentinput"+data.media_id).removeClass("comment");
+          $(".commentinput"+data.media_id).addClass("commented");
+          var count = parseInt( $(".commentinput"+data.media_id).parent().next().children().html());
+          count = count+1;
+          $(".commentinput"+data.media_id).parent().next().children().html(count);
+          
+          self[0].reset();
+          console.log(data);
+        },
+        error:function(err){
+          console.log(err);
+        }
+      });
+
+      return false;
+    
+  });
+
+
+  $(document).on("click", ".save-to-list", function(){
+
+    var self = $(this);
+    var list_id = self.attr("value");
+    var media_id = self.parent().parent().attr("media_id");
+
+    if(self.hasClass("save")){
+      $.ajax({
+        url:"/works/media/favorite/add",
+        method:"POST",
+        data:{
+          list_id:list_id,
+          media_id:media_id
+        },
+        success:function(data){
+          $(".list-ul-div"+media_id)
+          $(".list-ul-div"+media_id+" .save"+data.list_id).removeClass("save");
+          $(".list-ul-div"+media_id+" .save"+data.list_id).addClass("saved");
+          $(".favorite"+media_id).addClass("favorited");
+        },
+        error:function(err){
+          console.log(err);
+        }
+      });
+    }
+    else
+    {
+      $.ajax({
+        url:"/works/media/favorite/delete",
+        method:"POST",
+        data:{
+          list_id:list_id,
+          media_id:media_id
+        },
+        success:function(data){
+          $(".save"+list_id).removeClass("saved");
+          $(".save"+list_id).addClass("save");
+          var stillsaved = false;
+          $(".list-ul-div"+media_id).children().each(function(){
+            var self = $(this);
+            if(self.children().hasClass("saved")){
+              stillsaved = true;
+            }
+          })
+          if(!stillsaved){
+            $(".favorite"+media_id).removeClass("favorited");
+          }
+        },
+        error:function(err){
+          console.log(err);
+        }
+      });
+    }
+  })
+</script>
+
+<script type="text/javascript">
+  (function($) {
+
+    $.fn.tagpeople = function() {
+
+      return $(this).each(function(){
+          var element = $(this);
+            $(element).tagmate({
+                exprs: {
+                    "@": Tagmate.NAME_TAG_EXPR,
+                  // "#": Tagmate.HASH_TAG_EXPR
+
+                },
+                sources: {
+                    "@": function(request, response) {
+                        // use convenience filter function 
+                        var filtered = Tagmate.filterOptions(options, request.term);
+                        response(filtered);
+                    }
+                },
+                capture_tag: function(tag) {
+                },
+                replace_tag: function(tag, value) {
+                },
+                //textareaid: 21,
+                highlight_tags: true,
+                highlight_class: "hilite",
+                menu_class: element.next().attr("class"),
+                menu_option_class: "option",
+                menu_option_active_class: "active"
+            });
+
+         /* $("#get_all_tags").click(function() {
+              alert($("textarea").getTags());
+
+          });
+
+          $("#get_name_tags").click(function() {
+              alert($("textarea").getTags({
+                  "@": Tagmate.NAME_TAG_EXPR
+              }));
+          });
+
+          $("#get_hash_tags").click(function() {
+              alert($("textarea").getTags({
+                  "#": Tagmate.HASH_TAG_EXPR
+              }));
+          });
+
+          $("#get_price_tags").click(function() {
+              alert($("textarea").getTags({
+                  "$": Tagmate.MONEY_TAG_EXPR
+              }));
+          });*/
+
+      return null;
+
+      });
+
+    }
+
+}(jQuery));
+</script>
+
+<script>
+
+    /* Light YouTube Embeds by @labnol */
+    /* Web: http://labnol.org/?p=27941 */
+
+    $(document).ready(function() {
+            var div, n,
+                v = document.getElementsByClassName("youtube-player");
+            for (n = 0; n < v.length; n++) {
+                div = document.createElement("div");
+                div.setAttribute("data-id", v[n].dataset.id);
+                div.innerHTML = labnolThumb(v[n].dataset.id);
+                div.onclick = labnolIframe;
+                v[n].appendChild(div);
+            }
+        });
+
+    function labnolThumb(id) {
+        var thumb = '<img src="https://i.ytimg.com/vi/ID/hqdefault.jpg">',
+            play = '<div class="play"></div>';
+        return thumb.replace("ID", id) + play;
+    }
+
+    function labnolIframe() {
+        var iframe = document.createElement("iframe");
+        var embed = "https://www.youtube.com/embed/ID?autoplay=1";
+        iframe.setAttribute("src", embed.replace("ID", this.dataset.id));
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "1");
+        this.parentNode.replaceChild(iframe, this);
+    }
+
+</script>
+<script type="text/javascript">
+  FB.init({
+    appId: '1115232975169557',
+    version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+  });     
+
+  $(document).on("click", ".share.facebook", function(e){
+      e.preventDefault();
+      var self = $(this);
+      FB.ui({
+          method: 'share',
+          display: 'popup',
+          href: self.attr("href"),
+        }, function(response){});
+  })
+</script>
+
+<script type="text/javascript">
+  $(document).on("submit", "#adding_new_list_form", function(e){
+    var self = $(this);
+    console.log(self.serialize());
+    var media_id = 0;
+    media_id=parseInt($(".media-id-for-add-customlist").val());
+    console.log(media_id);
+    $.ajax({
+      url:"/api/user/customlist/add",
+      method:"POST",
+      data:self.serialize(),
+      success:function(data){
+        console.log(data);
+        $(".lists_list").append('<li><div class = "save'+data.id+' save-to-list save" value = "'+data.id+'" >'+data.list_name+'</div></li>');
+        if(media_id>0){
+          $(".list-ul-div"+media_id+" .save"+data.id).click();
+        }
+        
+        $("#addNewList").modal("toggle");
+      },
+      error:function(err){
+        console.log(err);
+      }
+    })
+
+    return false;
+  })
 </script>

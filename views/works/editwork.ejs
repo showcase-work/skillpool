@@ -23,174 +23,105 @@
                     </div>
                     <div class = "right-block-padded-container edit-work-container-hide">
                         <form action="/works/edit-work" method = "post" class="add-work-form" >
+                            <input type="hidden" 
+                            value="<%= project.id %>" 
+                            class="form-control-personal projectIdInput"
+                            name = "projectId"/>
 
                             <ul class="form-content">
                                 <li>
                                     <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Project Title *</label>
-                                                </td>
-                                                <td class="project-title">
-                                                    <input type="text" 
-                                                    value="<%= project.title %>" 
-                                                    class="form-control-personal"
-                                                    name = "title"
-                                                    placeholder = "Project Title" />
-                                                   
-                                                        <input type="hidden" 
-                                                        value="<%= project.id %>" 
-                                                        class="form-control-personal projectIdInput"
-                                                        name = "projectId"/>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        
+                                        <label>Project Title *</label><input 
+                                        type="text" 
+                                        value="<%= project.title %>" 
+                                        class="form-control-personal"
+                                        name = "title"
+                                        placeholder = "Project Title" 
+                                        data-validation="required length" data-validation-length="min4"/>     
+                                    </div>
+                                </li>
+
+
+                                <li>
+                                    <div class="form-group-personal">
+                                        
+                                        <label>Project Domain</label><select 
+                                            value="<%= project.type %>" 
+                                            class="form-control-personal "
+                                            name = "type"
+                                            placeholder = "college start year?"
+                                            id = "type">
+                                            <option value = "music" >Music</option>
+                                            <option value = "photography">Photography</option>
+                                            <option value = "videography">Videography</option>
+                                            <option value = "writing">Writing</option>
+                                            <option value = "artDesign">Art/Design</option>
+                                        </select>
+                                                
                                     </div>
                                 </li>
 
                                 <li>
                                     <div class="form-group-personal">
-                                        <table class="textareawithnumber">
-                                            <tr>
-                                                <td>
-                                                    <label>Description</label>
-                                                </td>
-                                                <td>
-                                                    <textarea 
-                                                    type="text"
-                                                    class="form-control-personal"
-                                                    name = "description"
-                                                    placeholder = "Describe your project"><%= project.description %></textarea>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        
+                                            <label>Description</label><textarea 
+                                            type="text"
+                                            class="form-control-personal"
+                                            name = "description"
+                                            placeholder = "Describe your project"><%= project.description %></textarea>
+                                        
                                     </div>
                                 </li>
 
                                 <li>
                                     <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Role</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%= project.role %>" 
-                                                    class="form-control-personal role"
-                                                    name = "role"
-                                                    placeholder = "Your role? Graphic Designer, etc" />
-                                                </td>
-                                            </tr>
-                                        </table>
+                                            <%
+                                                var skillsObject = [];
+                                                if(project.skills){
+                                                    var skills = project.skills;
+                                                    skills.forEach(function(skill){
+                                                        skillsObject.push({"value":skill.id, "text":skill.name})
+                                                    })
+                                                }
+                                            %>
+                                            <label>Skills Used</label><input type="text" 
+                                            value="<%= project.skills_used %>" 
+                                            class="form-control-personal skills multipleInputDynamic"
+                                            name = "skills"
+                                            data-initial-value='<%-JSON.stringify(skillsObject)%>'
+                                            placeholder = "Skills used?"
+                                            multiple data-url="/api/lists/skills" 
+                                            data-load-once="true" />
+                                                
                                     </div>
                                 </li>
 
                                 <li>
                                     <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Project Domain</label>
-                                                </td>
-                                                <td>
-                                                    <select 
-                                                        value="<%= project.type %>" 
-                                                        class="form-control-personal "
-                                                        name = "type"
-                                                        placeholder = "college start year?"
-                                                        id = "type">
-                                                        <option value = "music" >Music</option>
-                                                        <option value = "photography">photography</option>
-                                                        <option value = "videography">videography</option>
-                                                        <option value = "writing">Writing</option>
-                                                        <option value = "artDesign">Art/Design</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Tools Used</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%= project.tools %>" 
-                                                    class="form-control-personal tools"
-                                                    name = "tools"
-                                                    placeholder = "Tools used?" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Skills Used</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%= project.skills_used %>" 
-                                                    class="form-control-personal skills"
-                                                    name = "skills"
-                                                    placeholder = "Skills used?" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Tags</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%= project.tags %>" 
-                                                    class="form-control-personal genre"
-                                                    name = "tags"
-                                                    placeholder = "#Tags" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>External Link</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%= project.main_link %>" 
-                                                    class="form-control-personal"
-                                                    name = "link"
-                                                    placeholder = "External Link if exists" />
-                                                </td>
-                                            </tr>
-                                        </table>
+                                            <%
+                                                var tagsObject = [];
+                                                if(project.tags){
+                                                    var tags = project.tags.split(",");
+                                                    tags.forEach(function(tag){
+                                                        tagsObject.push({"text":tag, "value":tag})
+                                                    })
+                                                }
+                                            %>
+                                            <label>Tags</label><input type="text" 
+                                            value="<%= project.tags %>" 
+                                            class="form-control-personal genre multipleInputDynamicTags"
+                                            name = "tags"
+                                            value="<%=tags%>"
+                                            data-initial-value='<%-JSON.stringify(tagsObject)%>'
+                                            multiple data-url="/api/lists/tags" 
+                                            placeholder = "#Tags (You dont need to add #)"
+                                            data-load-once="true" />
+                                                
                                     </div>
                                 </li>
                             </ul>
                             <button type="submit" submit-work" class="btn btn-primary">Save</button>
-                            <span class="error"></span>
                         </form>
                     </div>
                     <div class="heading-block">
@@ -213,11 +144,11 @@
                                     <li class="edit-work-media-container">
                                             <div class = "edit-works-inner-container">
                                                 <div class="media-main">
-                                                    <% if (mediaData.media_type=="image") {%>
+                                                    <% if (mediaData.media_type==1) {%>
                                                         <img src = "<%= mediaData.link %>">
                                                     <% } %>
 
-                                                    <% if (mediaData.media_type=="blog") {%>
+                                                    <% if (mediaData.media_type==2) {%>
 
                                                         <a data-toggle="modal" href="/modals/editblog?projectId=<%=project.id%>&&mediaId=<%=mediaData.id%>" data-target="#myEditBlog" class="blog-edit"><i class="fa fa-edit"></i></a>
                                                         <div class="blog-outer-container">
@@ -227,13 +158,13 @@
                                                         </div>
                                                     <% } %>
 
-                                                    <% if (mediaData.media_type=="youtube") {%>
+                                                    <% if (mediaData.media_type==3) {%>
                                                         <div class="youtube-container">
                                                             <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%-mediaData.link%>" frameborder="0" allowfullscreen></iframe> 
                                                         </div>
                                                     <% } %>
 
-                                                    <% if (mediaData.media_type=="soundcloud") {%>
+                                                    <% if (mediaData.media_type==4) {%>
                                                         <div class="soundcloud-container">
                                                             <iframe style="margin-bottom:-8px;" width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%-mediaData.link%>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
                                                         </div>
@@ -241,9 +172,27 @@
 
                                                 </div>
                                                 <input class="form-control-personal first-input-edit-media tohide" type="text" placeholder="add description" name="mediadescription" value="<%= mediaData.description %>">
-                                                <input class="form-control-personal tohide genre" type="text" placeholder="add tags" name="mediatags" value="<%= mediaData.tags %>">
+                                                <%
+                                                    var tagsObjectForMedia = [];
+                                                    if(mediaData.tags){
+                                                        var tagsForMedia = mediaData.tags.split(",");
+                                                        tagsForMedia.forEach(function(tag){
+                                                            tagsObjectForMedia.push({"text":tag, "value":tag})
+                                                        })
+                                                    }
+                                                %>
+                                                <input 
+                                                class="form-control-personal tohide genre multipleInputDynamicTags" 
+                                                type="text" 
+                                                placeholder="add tags" 
+                                                name="mediatags" 
+                                                value="<%= mediaData.tags %>" 
+                                                multiple data-url="/api/lists/tags" 
+                                                data-initial-value='<%-JSON.stringify(tagsObjectForMedia)%>'
+                                                data-load-once="true">
                                                 <input class="form-control-personal position-input" type="hidden" name="position">
                                                 <input class="form-control-personal" type="hidden" name="mediaid" value="<%= mediaData.id %>">
+
                                                 <div class="dropdown edit-media-settings-button" class="tohide">
                                                   <i data-toggle="dropdown" class="fa fa-gear tohide" style="position:relative"></i>
                                                   <ul class="dropdown-menu dropdown-align-right dropdown-padding">
@@ -257,13 +206,13 @@
                             </ul>
                             <input class="form-control-personal" type="hidden" name="projectId" value="<%= project.id %>">
                         </form>
-                        <form action="/api/delete/work/<%=project.id%>" method="post" >
+                        <form action="/api/delete/work/<%=project.id%>" method="post" class="button-style">
                             <button type="submit" class="btn btn-small btn-danger tohide">Delete</button>
                         </form>
                         
                         <button type="button" class="btn btn-small btn-blue reorder tohide">Re-Order</button>
                         <button type="submit" value="submit" class="btn btn-small btn-primary tohide save-data">Save</button>
-                        <form action="/works/<%=project.id%>" method="get">
+                        <form action="/works/<%=project.id%>" method="get" class="button-style">
                             <button type="submit" value="preview" class="btn btn-small btn-primary tohide save-data">Preview</button>
                         </form>
                         <button type="button" class="btn btn-small btn-primary donereorder">Done</button>
@@ -323,10 +272,8 @@
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 
-<script src="/js/tags_genre.js"></script>
-<script src="/js/tags_tools.js"></script>
-<script src="/js/tags_skills.js"></script>
-<script src="/js/tags_role.js"></script>
+<script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+
 
 <script>
 $(".add-project-heading").click(function(){
@@ -457,5 +404,20 @@ $( "#sortable" ).disableSelection();
         })
         console.log();
     })
+</script>
+<script>
+$(".multipleInputDynamicTags").fastselect({});
+
+$('.multipleInputDynamic').fastselect({
+    parseData:function(response, fastsearchApi){
+        var responseToSend = [];
+        console.log("1");
+        response.forEach(function(data){
+            console.log("2");
+            responseToSend.push({value:data.id, text:data.name});
+        })
+        return responseToSend;
+    }
+});
 </script>
 </html>

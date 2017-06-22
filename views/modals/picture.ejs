@@ -25,7 +25,6 @@
                 status('Error: ' + xhr.status);
             },
             success: function(id) {
-                console.log(id);
                 window.location.replace("/works/edit-work?id="+id);
             }
         });

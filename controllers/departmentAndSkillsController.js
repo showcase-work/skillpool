@@ -17,8 +17,17 @@ module.exports = app => {
         })
     }
 
+    function renderCompleteProfile(req,res,next){
+        departmentAndSkillsService.fetchAllDepartments().then((data)=>{
+            return res.render("modals/completeProfile", {departments:data});
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
     return {
         fetchAllDepartments,
-        getDepartmentAndRenderPage
+        getDepartmentAndRenderPage,
+        renderCompleteProfile
     }
 }

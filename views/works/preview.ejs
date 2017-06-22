@@ -137,11 +137,11 @@
                           <li class="project-work-media-container">
                                   <div class = "project-works-inner-container">
                                       <div class="media-main">
-                                          <% if (mediaData.media_type=="image") {%>
+                                          <% if (mediaData.media_type==1) {%>
                                               <img src = "<%= mediaData.link %>">
                                           <% } %>
 
-                                          <% if (mediaData.media_type=="blog") {%>
+                                          <% if (mediaData.media_type==2) {%>
                                               <div class="blog-outer-container">
                                                   <div class="blog-inner-container">
                                                       <%-mediaData.blog%>
@@ -149,13 +149,13 @@
                                               </div>
                                           <% } %>
 
-                                          <% if (mediaData.media_type=="youtube") {%>
+                                          <% if (mediaData.media_type==3) {%>
                                               <div class="youtube-container">
                                                   <iframe style="margin-bottom:-8px;" width="100%" height="334px" src="https://www.youtube.com/embed/<%-mediaData.link%>" frameborder="0" allowfullscreen></iframe> 
                                               </div>
                                           <% } %>
 
-                                          <% if (mediaData.media_type=="soundcloud") {%>
+                                          <% if (mediaData.media_type==4) {%>
                                               <div class="soundcloud-container">
                                                   <iframe style="margin-bottom:-8px;" width="100%" height="334px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%-mediaData.link%>&amp&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
                                               </div>

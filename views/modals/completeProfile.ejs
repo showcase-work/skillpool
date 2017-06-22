@@ -1,0 +1,48 @@
+<div class="container complete-profile" style="padding-bottom:20px;">
+    <div class="status-bar">
+        <div class="circle"></div>
+        <div class="line"></div>
+        <div class="circle"></div>
+        <div class="line"></div>
+        <div class="circle"></div>
+        <div class="line"></div>
+        <div class="circle"></div>
+    </div>
+    <form action = "api/user/department-skills" method = "post" id="departmentsSelectionForm" >
+        <div class="section1 skills user-settings-container">
+            <div>   
+                <h2>Choose your Department/s</h2>
+                <% departments.forEach(function(department){ %>
+                    <div class="row dept-edit">
+                        <div class="col-xs-3 text-edit">
+                            <label class="checkbox">
+                                <input type="checkbox" class="department-checkboxes" value= "<%= department.id %>" name = "departments" data-toggle="checkbox"><%= department.department_name %>
+                            </label>
+                        </div>
+                        <div class="dept-skills skills-list">
+                            <h3>Select Skills</h3>
+                            <input type="text" name="skills" data-role="tagsinput" class="skills-select multipleInputDynamic" multiple data-url="/api/lists/skills?department_id=<%=department.id%>" data-load-once="true" />
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="error-div"></div>
+            <button class='btn btn-primary' type="submit">Next</button>
+        </div>
+    </form>
+</div>
+<script src="/flat-ui/docs/assets/js/application.js"></script>
+<script>
+$('.multipleInputDynamic').fastselect({
+    parseData:function(response, fastsearchApi){
+        var responseToSend = [];
+        console.log("1");
+        response.forEach(function(data){
+            console.log("2");
+            responseToSend.push({value:data.id, text:data.name});
+        })
+        return responseToSend;
+        
+    }
+});
+</script>

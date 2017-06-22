@@ -32,21 +32,21 @@ module.exports = app => {
     }
 
     function updatePersonalDetails(req,res,next) {
-        userService.updatePersonalDetails(req.body, req.user.id)
+        userService.updatePersonalDetails(req.body, req.user.id, req.user.username)
         .then(()=>{
             return userService.getme(req.user.id)
         }).then((user)=>{
-            return res.render("usersettings/personal", {user:user, tab:'personal'});
+            res.send(user);
+            //return res.render("usersettings/personal", {user:user, tab:'personal'});
         }).catch(err => next(err));
     }
 
     function updateDepartmentAndSkillsDetails(req,res,next) {
         userService.updateDepartmentAndSkillsDetails(req.body, req.user.id)
-        .then(()=>{
-            return userService.getme(req.user.id)
-        }).then((user)=>{
-            req.user = user;
-            return departmentAndSkillsController.getDepartmentAndRenderPage(req,res,next);
+        .then((data)=>{
+            res.send(data);
+        }).catch(err=>{
+            next(err);
         })
     }
 
@@ -72,12 +72,47 @@ module.exports = app => {
         })
     }
 
+    function getUserFriends(req,res,next){
+        userService.getUserFriends(req.user.id).then((data)=>{
+            res.send(data);
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
+    function addCustomList(req,res,next){
+        userService.addCustomList(req.body, req.user).then(data=>{
+            res.send(data);
+        }).catch(err=>{
+            next(err);
+        })
+    }
+
+    function checkUsernameAvailability(req,res,next){
+        if(req.body.username == req.user.username){
+            res.send(true);
+        }   
+        else
+        {
+            userService.checkUsernameAvailability(req.body.username, req.user.username)
+            .then(data=>{
+                res.send(data);
+            }).catch(err=>{
+                next(err);
+            })
+        }
+        
+    }
+
     return {
         authenticateAndAttachUser,
         updatePersonalDetails,
         updateDepartmentAndSkillsDetails,
         unlinkAccount,
         uploadProfileImage,
-        uploadAndCropImage
+        uploadAndCropImage,
+        getUserFriends,
+        addCustomList,
+        checkUsernameAvailability
     };
 };

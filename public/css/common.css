@@ -2,6 +2,13 @@ body{
     background-color: #f5f8fa;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 .inline-block-top{
     display: inline-block;
     vertical-align: top;
@@ -46,7 +53,6 @@ ul{
 .bootstrap-tagsinput .tag{
 background-color: #16A085;
 color:white;
-margin-bottom: -1px;
 }
 
 
@@ -61,7 +67,6 @@ margin-bottom: -1px;
   border: 1px solid #e1e8ed;
   border-radius: 6px;
   box-shadow: none;
-  margin:2px;
   padding: 8px 12px;
   width:100%;
 }
@@ -600,5 +605,168 @@ ul.genres-container li{
   color:#95A5A6;
   font-size: 11px;
 }
-    
 
+
+
+
+
+
+
+.user-settings-container .dept-edit{
+  display:inline-block;
+  vertical-align: top;
+  margin-left: auto;
+  margin-right: auto;
+  width: 15em;
+  width: 80%;
+  padding: 10px;
+  text-align: left;
+}
+
+.user-settings-container h3{
+  font-size: 16px;
+}
+
+.user-settings-container .skills-list{
+  display:none;
+}
+
+.user-settings-container .skills-padded-container{
+  display:none;
+}
+
+.complete-profile h2{
+  font-size: 26px;
+}
+
+.complete-profile h3{
+  margin-top: 10px;
+}
+
+.complete-profile .dept-skills{
+  display: none;
+  width:100%;
+
+}
+
+.complete-profile .dept-skills h3{
+  text-align: left;
+}
+
+.complete-profile .col-xs-3.text-edit{
+  padding-left: 0px !important;
+}
+
+.complete-profile .dept-skills h3{
+  margin-bottom: 5px;
+}
+
+.fstChoiceItem, .fstMultipleMode .fstQueryInput, .fstNoResults{
+  font-size: 0.7em !important;
+}
+
+.fstMultipleMode .fstQueryInput{
+  padding-top: 0px;
+  position: relative;
+  top: -1px;
+}
+
+.fstElement .fstControls input{
+  margin:0px;
+}
+
+.fstChoiceRemove{
+  margin-top: -10px;
+}
+
+.fstMultipleMode .fstControls{
+  padding:0px;
+  padding-left: 5px;
+  width:100%;
+}
+
+.fstResultItem{
+  font-size: 0.7em;
+}
+
+.fstElement{
+  width:100%;
+  padding-top: 5px;
+  display: inline-grid;
+  border: 1px solid #ebebeb;
+  border-radius: 7px;
+
+}
+
+.fstResults{
+  max-height: 13em;
+  text-align: left;
+}
+
+.error-div{
+  color:red;
+}
+
+.fstElement .fstControls input{
+  border:none;
+}
+
+label,input{
+  margin:0px;
+}
+
+.form-group-personal{
+  padding-bottom:5px;
+}
+
+.form-group-personal label{
+  display: inline-block;
+  width:30%;
+  vertical-align: top;
+}
+
+.form-group-personal input, .form-group-personal select, .form-group-personal textarea, .form-group-personal .fstElement, .form-group-personal .group-selection-container{
+  display: inline-block;
+  width:70%;
+  vertical-align: top;
+}
+
+.form-group-personal .help-block.form-error{
+  padding-left: 30%;
+}
+
+
+.btn-primary{
+  background-color: #16A085 !important;
+}
+
+.form-group-personal .textarea-count{
+  width:20px !important;
+  right:3px;
+}
+
+
+input:-moz-read-only { /* For Firefox */
+    background-color: #ebebeb;
+    color:grey !important;
+}
+
+input:read-only { 
+    background-color: #ebebeb;
+    color:grey !important;
+}
+
+.form-group-personal.usernameinputgroup{
+  position: relative;
+}
+
+.form-group-personal.usernameinputgroup img{
+  display: inline-block;
+  width:15px;
+  height:15px;
+  position: absolute;
+  right:0px;
+  top:14px;
+  right:5px;
+  display: none;
+}

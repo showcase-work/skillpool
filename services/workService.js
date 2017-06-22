@@ -13,7 +13,15 @@ module.exports = app => {
 
         return new Promise((resolve,reject)=>{
             Work.getWorkById(id).then((data)=>{
-                return resolve(data);
+
+                var skillIds = data.skills_used.split(",");
+
+                Skill.getSkillsByIds(skillIds).then(skillDetails=>{
+                    data.skills = skillDetails;
+                    return resolve(data);
+                });
+
+                
             }).catch(err=>{
                 return reject(err);
             })
@@ -39,31 +47,39 @@ module.exports = app => {
     }
 
     function updateMedia(params, userId){
-        
             var i=0;
             var c = [];
-            params.mediaid.forEach(function(id){
-
-                var p = new Promise((resolve,reject)=>{
-                                Media.updateMedia({description:params.mediadescription[i], tags:params.mediatags[i], position:params.position[i]}, params.mediaid[i], userId).then((response) => {
-                                    return resolve(response);
-                                }).catch(err=>{
-                                    return reject(err);
-                                });
+            if(typeof params.mediaid === 'string'){
+                return new Promise((resolve,reject)=>{
+                    Media.updateMedia({description:params.mediadescription, tags:params.mediatags, position:params.position}, params.mediaid, userId, params.projectId).then((response) => {
+                        return resolve(response);
+                    }).catch(err=>{
+                        console.log(err);
+                        return reject(err);
+                    });
                 })
-                c.push();
-                i++;
-            })
+            }
+            else
+            {
+                params.mediaid.forEach(function(id){
 
-
-            return new Promise((resolve2,reject2)=>{
-                Promise.all(c).then((data)=>{
-                    return resolve2(data);
+                    var p = new Promise((resolve,reject)=>{
+                                    Media.updateMedia({description:params.mediadescription[i], tags:params.mediatags[i], position:params.position[i]}, params.mediaid[i], userId, params.projectId).then((response) => {
+                                        return resolve(response);
+                                    }).catch(err=>{
+                                        return reject(err);
+                                    });
+                    })
+                    c.push(p);
+                    i++;
                 })
-            })
-            /*work.updateMedia((params, userId).then(data=>{
-                return resolve(data)
-            }))*/
+
+                return new Promise((resolve2,reject2)=>{
+                    Promise.all(c).then((data)=>{
+                        return resolve2(data);
+                    })
+                })
+            }
     }
 
     function getAllWorksByUserId(id){
@@ -131,8 +147,6 @@ module.exports = app => {
                         mediadata.comments=comments;
                     });
                 })
-                console.log("qweasd");
-                console.log(mediaDetails);
                 objectToSendBack.mediaDetails = mediaDetails;
                 var skillsPromise = Skill.getSkillsByIds(objectToSendBack.userDetails.skills.split(','));
                 var departmentPromise = Department.getDepartmentsById(objectToSendBack.userDetails.departments.split(','));

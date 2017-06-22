@@ -4,11 +4,19 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="/flat-ui/js/flat-ui.js"></script>
 <script src="/flat-ui/docs/assets/js/application.js"></script>
-
+<script type="text/javascript" src="/js/multipleselect/dist/fastselect.standalone.js"></script>
+<script type="text/javascript" src="/notify/bootstrap-notify.min.js"></script>
 <!-- <script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+
  -->
+ <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+
 
 <script>
+function completeProfilePage(){
+    $("#loginModal .modal-dialog").addClass("modal-lg");
+    $("#loginModal .modal-content").load("/modals/complete-profile");
+}
 function createCookie(name, value, days) {
             if (days) {
                 var date = new Date();
@@ -40,18 +48,18 @@ function setCurrentUser(token){
 
     createCookie('token', token, 900000);
 
-    $.ajaxSetup({
+    /*$.ajaxSetup({
         headers:{
             'Authorization':token
         }
-    });
+    });*/
     location.reload();
 }
 
 </script>
 
 <script>
-$(".login-local").click(function(e){
+/*$(".login-local").click(function(e){
     var url = "/login/local"; // the script where you handle the form input.
 
         $.ajax({
@@ -66,7 +74,7 @@ $(".login-local").click(function(e){
              });
 
         e.preventDefault();
-});
+});*/
 
 function popupWindow(url, title, w, h, loc) {
     // Fixes dual-screen position                         Most browsers      Firefox
@@ -86,22 +94,11 @@ function popupWindow(url, title, w, h, loc) {
 }
 
 $(".facebook-login-button").click(function(e){
-    var url2 = "/login/facebook"; // the script where you handle the form input.
-    var child_window = popupWindow(url2,"login",500,500,url2);
+    var child_window = popupWindow("/login/facebook","login",500,500,"/login/facebook");
      e.preventDefault();
-
-     /*$.ajax({
-            type: "GET",
-            url: url2,
-            data: {check:"check"}, // serializes the form's elements.
-            success: function(data)
-            {
-                 console.log("wokring in facebook buttoin");
-                console.log(data); // show response from the php script.
-            }
-      });*/
 });
 
+/*
 $(".twitter-login-button").click(function(e){
     var url2 = "/login/twitter"; // the script where you handle the form input.
     var child_window = popupWindow(url2,"login",500,500,url2);
@@ -113,18 +110,61 @@ $(".google-login-button").click(function(e){
     var child_window = popupWindow(url2,"login",500,500,url2);
      e.preventDefault();
 });
-
+*/
 </script>
 <script>
-/*SC.initialize({
-  client_id: '359cc0af9eb6ab2fe6d0cceed75fe418',
-  redirect_uri: 'http://localhost:8080/soundcloud/'
-});
 
-// update user's profile description
-SC.connect().then(function() {
-   SC.put('/me', {
-     user: { description: 'I am using the SoundCloud API!' }
-   });
-});*/
+function getAddWorksCompleteProfile(){
+    $("#loginModal").modal("toggle");
+}
+
+$(document).on("click", ".complete-profile .department-checkboxes", function(){
+    var self = $(this);
+    if(this.checked){
+        self.parent().parent().next().css("display","inline-block");
+    }
+    else{
+        self.parent().parent().next().hide();
+    }
+})
+
+$(document).on("submit","#departmentsSelectionForm", function(){
+        console.log("wokring in here");
+        var self = $(this);
+        var data = self.serialize();
+        var x = false;
+        $(".skills-list input").each(function(){
+            if($(this).val() != ""){
+                console.log($(this).val());
+                x=true;
+            }
+        })
+
+        if(x==false){
+            console.log("err");
+            $(".error-div").html("Please select atleast one skill");
+        }
+        else
+        {
+            $.ajax({
+                url:"/user-settings/department-skills",
+                data:data,
+                method:"POST",
+                success:function(data){
+                    if(data){
+                        getAddWorksCompleteProfile();
+                    }
+                },
+                error:function(err){
+                    console.log(err);
+                }
+            })
+        }
+
+        return false;
+})
+</script>
+
+<script>
+  $.validate({});
 </script>

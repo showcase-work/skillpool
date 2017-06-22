@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ../shared/styles %>
-    <link rel="stylesheet" type="text/css" href="/css/user-settings.css">
 
 
 <title>Skillpool | Personal settings</title>
@@ -83,44 +82,6 @@ if(typeof media == undefined){
 
                                 <li>
                                     <div class="form-group-personal">
-                                        <table class="textareawithnumber">
-                                            <tr>
-                                                <td>
-                                                    <label>Description</label>
-                                                </td>
-                                                <td>
-                                                    <textarea 
-                                                    type="text"
-                                                    class="form-control-personal"
-                                                    name = "description"
-                                                    placeholder = "Describe your project"><%= description %></textarea>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Role</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%=role %>" 
-                                                    class="form-control-personal"
-                                                    name = "role"
-                                                    placeholder = "Your role? Graphic Designer, etc" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="form-group-personal">
                                         <table>
                                             <tr>
                                                 <td>
@@ -145,17 +106,17 @@ if(typeof media == undefined){
 
                                 <li>
                                     <div class="form-group-personal">
-                                        <table>
+                                        <table class="textareawithnumber">
                                             <tr>
                                                 <td>
-                                                    <label>Tools Used</label>
+                                                    <label>Description</label>
                                                 </td>
                                                 <td>
-                                                    <input type="text" 
-                                                    value="<%=tools %>" 
+                                                    <textarea 
+                                                    type="text"
                                                     class="form-control-personal"
-                                                    name = "tools"
-                                                    placeholder = "Tools used?" />
+                                                    name = "description"
+                                                    placeholder = "Describe your project"><%= description %></textarea>
                                                 </td>
                                             </tr>
                                         </table>
@@ -200,24 +161,6 @@ if(typeof media == undefined){
                                     </div>
                                 </li>
 
-                                <li>
-                                    <div class="form-group-personal">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>External Link</label>
-                                                </td>
-                                                <td>
-                                                    <input type="text" 
-                                                    value="<%=link %>" 
-                                                    class="form-control-personal"
-                                                    name = "link"
-                                                    placeholder = "External Link if exists" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
                             </ul>
                             <button type="submit" submit-work" class="btn btn-primary">Submit</button>
                             <span class="error"></span>

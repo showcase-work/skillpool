@@ -1,0 +1,189 @@
+#preview .media-left-view{
+  background-color: black;
+  width:70%;
+  display: inline-block;
+  height: 100vh;
+  vertical-align: top;
+  margin: 0px;
+  text-align: center;
+  position: relative;
+}
+
+
+#preview .media-right-view{
+  width: 30%;
+  display: inline-block;
+  height: 100vh;
+  background-color: white;
+  vertical-align: top;
+  margin:0px;
+  padding: 10px;
+  overflow-y: scroll;
+  overflow-x:hidden;
+  border-radius: inherit;
+
+}
+
+#preview .left-nav
+{
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  z-index: 1000;
+  display: none;
+  opacity: 0.7;
+}
+
+#preview .right-nav
+{
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  z-index: 1000;
+  display: none;
+  opacity: 0.7;
+}
+
+#preview .media-left-view:hover .left-nav{
+  display:block;
+}
+
+#preview .media-left-view:hover .right-nav{
+  display:block;
+}
+
+#preview .media-inside-viewer{
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%)
+}
+
+#preview .media-inside-viewer img
+{
+  max-width: 100%;
+  max-height: 100vh;
+}
+
+
+#preview .media-right-view .media-viewer-user-img
+{
+  width: 45px;
+  border-radius: 6px
+}
+
+#preview .media-right-view .genres-container-preview
+{
+  position: absolute;
+  bottom: 3px;
+}
+
+#preview .media-right-view .genres-container-preview .genres{
+    background-color: #16a085;
+    color: white;
+    border-radius: 4px;
+    padding: 1px 5px 1px 5px;
+    margin-right: 4px;
+    font-size: 11px;
+    display: inline-block;
+    margin-top:4px;
+}
+
+
+#preview .media-right-view .user-details
+{
+  margin-bottom: 5px;
+  min-height: 45px;
+  margin-top: 5px;
+}
+
+#preview .media-right-view .user-details .artist-name
+{
+  padding-left: 8px; 
+  line-height: 1em; 
+  font-size: 15px;
+}
+#preview .media-right-view
+{
+  font-size: 12px;
+}
+
+#preview .media-details{
+    padding-bottom:58px;
+    min-height: 100px;
+    border-bottom: 1px solid #e1e8ed;
+    position: relative;
+}
+
+#preview .media-details .title{
+    font-size: 14px;
+}
+
+#preview .lcsb-dashboard{
+    display: inline-block;
+    right: initial;
+    left:initial;
+    position: relative;
+    padding-left: 0px;
+    width:100%;
+}
+
+#preview .lcsb-dashboard #commentMediaForm textarea{
+    border: 1px solid #ebebeb;
+    font-size: 12px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    line-height: initial;
+    padding:8px;
+    width:100%;
+}
+
+#preview .lcsb-dashboard #commentMediaForm{
+    display: flex;
+    width:100%;
+}
+
+#preview .lcsb-dashboard .btn-primary{
+    background-color: #1abc9c;
+    padding:8px;
+    font-size: 12px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#preview  .comments-container .commentor-pic{
+    width: 25px;
+    border-radius: 4px;
+}
+
+#preview  .comments-container .commentor-name{
+    line-height: initial;
+    padding-left: 4px;
+}
+
+#preview .comments-container .comments-table-wrap{
+    margin-top: 5px;
+    position: relative;
+}
+
+#preview .modal-lg{
+  width:95% !important;
+}
+
+#preview .delete-comment
+{
+  color: #BDC3C7;
+  cursor:pointer;
+  font-size: 10px;
+  position: absolute;
+  right: 0px;
+  top:0px;
+  line-height: 0.8;
+  display: none;
+  -webkit-transition: display 2s;
+  z-index: 2000;
+}
+#preview .comments-table-wrap:hover .delete-comment
+{
+  display: block;
+}

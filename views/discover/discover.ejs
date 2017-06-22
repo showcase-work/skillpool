@@ -6,12 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ../shared/styles %>
 
-    <link rel="stylesheet" type="text/css" href="css/sidebar.css">
-    <link rel="stylesheet" type="text/css" href="css/discover.css">
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="/css/discover.css">
+    <link rel="stylesheet" type="text/css" href="/css/preview.css">
 
     <% include ../shared/scripts-top %>
 
     <title><%= title %></title>
+
+    <style type="text/css">
+      .fetched_data_container{
+        display: none;
+      }
+
+      .check2{
+        position:relative !important;
+      }
+    </style>
 
 </head>
 <body>
@@ -23,39 +34,18 @@
                 <form id="navFiltersForm" class = "filter" method = "get" action = "">
 
                     <select id="multiple_filter_departments" multiple="multiple">
-                      <option value = "music" >Music</option>
-                      <option value = "photography">photography</option>
-                      <option value = "videography">videography</option>
-                      <option value = "writing">Writing</option>
-                      <option value = "artDesign">Art/Design</option>
+                      
                     </select>
                 
                  
-                    <select id = "multiple_filter_genres" multiple = "multiple">
-                        <option value=\"{$genre_name['genre_name']}\">Funk</option>
-                        <option value=\"{$genre_name['genre_name']}\">Funk2</option>
-                        <option value=\"{$genre_name['genre_name']}\">Funk3</option>
-                        <option value=\"{$genre_name['genre_name']}\">Funk4</option>
-                        <option value=\"{$genre_name['genre_name']}\">Funk5</option>
-                    </select>
+                    <select id = "multiple_filter_genres" multiple = "multiple"></select>
 
 
-                    <select id = "multiple_filter_skills" multiple = "multiple">
-                        
-                        <option value=\"{$skill_name['sub_skill']}\">gag</option>
-                        <option value=\"{$skill_name['sub_skill']}\">gag2</option>
-                        <option value=\"{$skill_name['sub_skill']}\">gag3</option>
-                        <option value=\"{$skill_name['sub_skill']}\">gag4</option>
-                    
-                    </select>
+                    <select id = "multiple_filter_skills" multiple = "multiple"></select>
                 
                 
                     <select id = "multiple_filter_type" multiple = "multiple">
-                        <option value="soundcloud">Audio</option>
-                        <option value="youtube">Video</option>
-                        <option value="image">Picture</option>
-                        <option value="blog">Writing</option>
-                        <!-- <option value="status">Status</option> -->
+                        
                     </select>
                 </form>
 
@@ -84,23 +74,35 @@
                           <div class="fetched_data_container"> Loading... </div>
                         </div>
                         <br />
-                        <button class="load_more btn btn-login btn-primary" id="load_more_button">load More</button>
+                        <button class="load_more btn btn-login btn-primary load-more-discover">load More</button>
                         <div class="animation_image" style="display:none;">Loading...</div>
                   </div>
 
             </div><div class = "right-block inline-block-top">
 
-                 <?php include "right_block.php" ?>
+                 <? include "right_block" ?>
 
             </div>
 
     </div>
 
-    <div class="modal fade" id="preview" role="dialog" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="preview" role="dialog" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="addNewList" role="dialog" tabindex="-1"><div class="modal-dialog modal-sm"><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif"/></div></div></div></div> 
+    <div class="modal fade" id="skillpoolShareModal" role="dialog" tabindex="-1"><div class="modal-dialog "><div class="modal-content"><div class="modal-body"><img src = "/images/loading.gif" style = "width: 100px;"/></div></div></div></div> 
 
 </body>
 
 <% include ../shared/scripts %>
+<script type="text/javascript" src = "/js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="/js/masonry.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="/js/nav-filters.js"></script>
+<script type="text/javascript" src="/js/jquery.fieldselection.js"></script>
+<script type="text/javascript" src="/js/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="/js/jquery.tagmate.js"></script>
+<script type="text/javascript" src="//connect.facebook.net/en_US/sdk.js"></script>
+<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+
 <% include scripts.ejs %>
 
 </html>
