@@ -29,7 +29,7 @@ module.exports = app => {
                 workData = work;
                 return imagesService.uploadMultipleImages(files);
             }
-        }).then(function(images){
+        }).then(function(images){  
             return mediaService.uploadImages(images,projectId,userId);
         }).then((isUploaded)=>{
             if(isUploaded){
